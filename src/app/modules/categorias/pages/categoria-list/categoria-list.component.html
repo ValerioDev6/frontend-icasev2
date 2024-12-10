@@ -1,0 +1,121 @@
+<div>
+	<nz-breadcrumb class="font-bold text-sm" [nzAutoGenerate]="true"> </nz-breadcrumb>
+</div>
+
+<div class="container mx-auto py-6">
+	<div class="flex flex-col md:flex-row justify-between items-center mb-6">
+		<h3 class="text-xl font-semibold text-gray-800 mb-4 md:mb-0 flex items-center">
+			<svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 32 32">
+				<path
+					fill="#000000"
+					d="m6.76 6l.45.89L7.76 8H12v5H4V6zm.62-2H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H9l-.72-1.45a1 1 0 0 0-.9-.55m15.38 2l.45.89l.55 1.11H28v5h-8V6zm.62-2H19a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-4l-.72-1.45a1 1 0 0 0-.9-.55M6.76 19l.45.89l.55 1.11H12v5H4v-7zm.62-2H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1H9l-.72-1.45a1 1 0 0 0-.9-.55m15.38 2l.45.89l.55 1.11H28v5h-8v-7zm.62-2H19a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1h-4l-.72-1.45a1 1 0 0 0-.9-.55"
+				/>
+			</svg>
+			Gestión de Categorias
+		</h3>
+
+		<div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+			<nz-input-group [nzSuffix]="suffixIconSearch" class="w-full md:w-64">
+				<input type="text" nz-input placeholder="Buscar categoria" [(ngModel)]="search" (keyup.enter)="searchTo()" />
+			</nz-input-group>
+			<ng-template #suffixIconSearch>
+				<span nz-icon nzType="search"></span>
+			</ng-template>
+			<div class="flex">
+				<button
+					(click)="refreshPage()"
+					nz-tooltip
+					nzTooltipTitle="Refrescar"
+					class="flex items-center justify-center h-9 px-3 bg-[#22c55e] hover:bg-[#1ea352] transition-colors"
+				>
+					<span nz-icon nzType="sync" nzTheme="outline" class="text-white text-lg font-bold"></span>
+				</button>
+
+				<button
+					(click)="downloadPDF()"
+					nz-tooltip
+					nzTooltipTitle="Descargar PDF"
+					class="flex items-center justify-center h-9 px-3 bg-red-500 hover:bg-red-600 transition-colors"
+				>
+					<span nz-icon nzType="file-pdf" nzTheme="fill" class="text-white text-lg font-bold"></span>
+				</button>
+
+				<button
+					(click)="descargarExcel()"
+					nz-tooltip
+					nzTooltipTitle="Descargar Excel"
+					class="flex items-center justify-center h-9 px-3 bg-[#1D6F42] hover:bg-[#185c37] transition-colors"
+				>
+					<span nz-icon nzType="file-excel" nzTheme="fill" class="text-white text-lg font-bold"></span>
+				</button>
+
+				<button
+					(click)="openAgregarCategoriasModal()"
+					class="flex items-center justify-center h-9 px-4 bg-[#6366f1] hover:bg-[#5558e4] transition-colors"
+				>
+					<span nz-icon nzType="plus-circle" nzTheme="fill" class="text-white text-lg font-bold mr-2"></span>
+					<span class="text-white font-medium">Crear</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<nz-table
+		#basicTable
+		[nzData]="categorias"
+		[nzLoading]="loading"
+		[nzPageSize]="limit"
+		[nzTotal]="total"
+		[nzFrontPagination]="false"
+		(nzPageIndexChange)="onPageChange($event)"
+		nzShowSizeChanger
+		[nzBordered]="true"
+		[nzShowQuickJumper]="true"
+	>
+		<thead>
+			<tr>
+				<th nzColumnKey="Nombre Rol">Categoria</th>
+				<th nzColumnKey="Descripcion">Fecha Creacion</th>
+				<th nzColumnKey="estado">Estado</th>
+				<th>Acciones</th>
+			</tr>
+		</thead>
+		<tbody>
+			@for (categorie of basicTable.data; track categorie.id_categoria) {
+				<tr>
+					<td>{{ categorie.nombre_cat }}</td>
+					<td>{{ categorie.created_at | date: 'MMM d, y, h:mm a' }}</td>
+					<td>
+						<nz-tag [nzColor]="categorie.estado ? 'success' : 'error'">
+							{{ categorie.estado ? 'Activo' : 'Inactivo' }}
+						</nz-tag>
+					</td>
+					<td class="flex gap-2">
+						<a
+							nz-tooltip
+							nzTooltipTitle="Editar"
+							class="edit-btn flex items-center justify-center w-8 h-7"
+							(click)="openEditarModal(categorie)"
+							nzType="fill"
+						>
+							<span nz-icon nzType="edit" nzTheme="fill" class="text-white"></span>
+						</a>
+						<a
+							nz-tooltip
+							nzTooltipTitle="Eliminar"
+							(click)="deleteCategorie(categorie)"
+							nzType="fill"
+							class="delete-btn flex items-center justify-center w-8 h-7"
+						>
+							<span nz-icon nzType="delete" nzTheme="fill" class="text-white"></span>
+						</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</nz-table>
+
+	<div class="mt-4 text-right text-sm text-gray-600">
+		<strong>Total de Roles: {{ total }}</strong>
+	</div>
+</div>

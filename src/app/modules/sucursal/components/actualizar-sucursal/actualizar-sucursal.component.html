@@ -1,0 +1,204 @@
+<nz-spin [nzSpinning]="isLoading">
+	<form [formGroup]="formGroup" (ngSubmit)="onUpdateSucursal()" class="mx-auto space-y-6">
+		<div class="space-y-2">
+			<label for="nombre_sucursal" class="flex items-center text-sm font-medium text-gray-700">
+				<i nz-icon nzType="home" nzTheme="outline" class="mr-2 text-gray-500"></i>
+				Nombre de la Sucursal
+			</label>
+			<div class="relative">
+				<input
+					type="text"
+					id="nombre_sucursal"
+					formControlName="nombre_sucursal"
+					class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+					placeholder="Ej. Sucursal Centro"
+				/>
+				@if (nombreSucursalField.valid && nombreSucursalField.touched) {
+					<i
+						nz-icon
+						nzType="check-circle"
+						nzTheme="twotone"
+						[nzTwotoneColor]="'#52c41a'"
+						class="absolute right-3 top-1/2 transform -translate-y-1/2"
+					></i>
+				}
+			</div>
+			@if (nombreSucursalField.touched && nombreSucursalField.hasError('required')) {
+				<p class="mt-1 text-sm text-red-600">Por favor ingrese el nombre de la sucursal</p>
+			}
+			@if (nombreSucursalField.touched && nombreSucursalField.hasError('minlength')) {
+				<p class="mt-1 text-sm text-red-600">El nombre debe tener al menos 5 caracteres</p>
+			}
+		</div>
+
+		<div class="space-y-2">
+			<label for="id_tipo_telefono" class="flex items-center text-sm font-medium text-gray-700">
+				<i nz-icon nzType="mobile" nzTheme="outline" class="mr-2 text-gray-500"></i>
+				Tipo de Teléfono
+			</label>
+			<div class="relative">
+				<select
+					id="id_tipo_telefono"
+					formControlName="id_tipo_telefono"
+					class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+				>
+					<option value="">Seleccione un tipo</option>
+					@for (tipo of tiposTelefono; track tipo.id_tipo_telefono) {
+						<option [value]="tipo.id_tipo_telefono">
+							{{ tipo.tipo_telefono }}
+						</option>
+					}
+				</select>
+				<i
+					nz-icon
+					nzType="down"
+					nzTheme="outline"
+					class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+				></i>
+			</div>
+			@if (tipoTelefonoSucursalField.touched && tipoTelefonoSucursalField.hasError('required')) {
+				<p class="mt-1 text-sm text-red-600">Por favor seleccione un tipo de teléfono</p>
+			}
+		</div>
+
+		@if (tipoTelefonoSucursalField.value) {
+			<div class="space-y-2">
+				<label for="telefono" class="flex items-center text-sm font-medium text-gray-700">
+					<i nz-icon nzType="phone" nzTheme="outline" class="mr-2 text-gray-500"></i>
+					Teléfono
+				</label>
+				<div class="relative">
+					<input
+						type="tel"
+						id="telefono"
+						formControlName="telefono"
+						class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+						placeholder="Ej. +1 234 567 890"
+					/>
+					@if (telefonoSucursalField.valid && telefonoSucursalField.touched) {
+						<i
+							nz-icon
+							nzType="check-circle"
+							nzTheme="twotone"
+							[nzTwotoneColor]="'#52c41a'"
+							class="absolute right-3 top-1/2 transform -translate-y-1/2"
+						></i>
+					}
+				</div>
+				@if (telefonoSucursalField.touched && telefonoSucursalField.hasError('required')) {
+					<p class="mt-1 text-sm text-red-600">Por favor ingrese el teléfono</p>
+				}
+			</div>
+		}
+
+		<div class="space-y-2">
+			<label for="email" class="flex items-center text-sm font-medium text-gray-700">
+				<i nz-icon nzType="mail" nzTheme="outline" class="mr-2 text-gray-500"></i>
+				Email
+			</label>
+			<div class="relative">
+				<input
+					type="email"
+					id="email"
+					formControlName="email"
+					class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+					placeholder="Ej. correo@dominio.com"
+				/>
+				@if (emailSucursalField.valid && emailSucursalField.touched) {
+					<i
+						nz-icon
+						nzType="check-circle"
+						nzTheme="twotone"
+						[nzTwotoneColor]="'#52c41a'"
+						class="absolute right-3 top-1/2 transform -translate-y-1/2"
+					></i>
+				}
+			</div>
+			@if (emailSucursalField.touched && emailSucursalField.hasError('required')) {
+				<p class="mt-1 text-sm text-red-600">Por favor ingrese un email</p>
+			}
+			@if (emailSucursalField.touched && emailSucursalField.hasError('email')) {
+				<p class="mt-1 text-sm text-red-600">Por favor ingrese un email válido</p>
+			}
+		</div>
+
+		<div class="space-y-2">
+			<label for="id_direccion" class="flex items-center text-sm font-medium text-gray-700">
+				<i nz-icon nzType="environment" nzTheme="outline" class="mr-2 text-gray-500"></i>
+				Dirección
+			</label>
+			<div class="relative">
+				<select
+					id="id_direccion"
+					formControlName="id_direccion"
+					class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+				>
+					<option value="">Seleccione una dirección</option>
+					@for (direccion of direcciones; track direccion.id_direccion) {
+						<option [value]="direccion.id_direccion">
+							{{ direccion.direccion }}
+						</option>
+					}
+				</select>
+				<i
+					nz-icon
+					nzType="down"
+					nzTheme="outline"
+					class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+				></i>
+			</div>
+			@if (direccionSucursalField.touched && direccionSucursalField.hasError('required')) {
+				<p class="mt-1 text-sm text-red-600">Por favor seleccione una dirección</p>
+			}
+		</div>
+
+		<div class="space-y-2">
+			<label for="id_pais" class="flex items-center text-sm font-medium text-gray-700">
+				<i nz-icon nzType="global" nzTheme="outline" class="mr-2 text-gray-500"></i>
+				País
+			</label>
+			<div class="relative">
+				<select
+					id="id_pais"
+					formControlName="id_pais"
+					class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+				>
+					<option value="">Seleccione un país</option>
+					@for (pais of paises; track pais.id_pais) {
+						<option [value]="pais.id_pais">
+							{{ pais.nombre }}
+						</option>
+					}
+				</select>
+				<i
+					nz-icon
+					nzType="down"
+					nzTheme="outline"
+					class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+				></i>
+			</div>
+			@if (paisSucursalField.touched && paisSucursalField.hasError('required')) {
+				<p class="mt-1 text-sm text-red-600">Por favor seleccione un país</p>
+			}
+		</div>
+
+		<div class="flex justify-center space-x-4">
+			<button
+				type="submit"
+				[disabled]="!formGroup.valid"
+				class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 flex items-center"
+			>
+				<i nz-icon nzType="save" nzTheme="outline" class="mr-2"></i>
+				Guardar
+			</button>
+			<button
+				type="button"
+				(click)="cancelar()"
+				class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 flex items-center"
+			>
+				<i nz-icon nzType="close-circle" nzTheme="outline" class="mr-2"></i>
+				Cancelar
+			</button>
+		</div>
+	</form>
+</nz-spin>

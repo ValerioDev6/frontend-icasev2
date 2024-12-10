@@ -1,0 +1,579 @@
+<nz-spin [nzSpinning]="loading">
+	<div class="bg-white">
+		<div class="mx-auto">
+			<div class="bg-white rounded-lg shadow-lg">
+				<!-- Header with gradient -->
+				<div class="p-5">
+					<div class="flex items-center space-x-3">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-8 w-8 text-black"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+							/>
+						</svg>
+						<div>
+							<nz-breadcrumb class="font-bold text-sm" [nzAutoGenerate]="true"> </nz-breadcrumb>
+						</div>
+					</div>
+				</div>
+
+				<form [formGroup]="productoForm" (ngSubmit)="onUpdateProducto()" class="p-6">
+					<!-- Basic Information Section -->
+					<div class="mb-8">
+						<h3 class="text-lg font-semibold text-gray-700 mb-4">Información Básica</h3>
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div>
+								<label class="block text-sm font-medium text-gray-700 mb-2">
+									<div class="flex items-center space-x-2">
+										<svg class="h-4 w-4 text-[#0071AB]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+											/>
+										</svg>
+										<span>Nombre del Producto</span>
+									</div>
+								</label>
+								<input
+									type="text"
+									formControlName="nombre_producto"
+									class="w-full outline-none px-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-[#0071AB] focus:ring focus:ring-[#0071AB]/20 transition-all duration-200"
+									[ngClass]="{
+										'border-red-500 focus:border-red-500 focus:ring-red-500':
+											nombreProductoControl?.invalid && nombreProductoControl?.touched,
+										'border-green-500 focus:border-green-500 focus:ring-green-500':
+											nombreProductoControl?.valid && nombreProductoControl?.touched,
+										'border-gray-300 focus:border-blue-500 focus:ring-blue-500': !nombreProductoControl?.touched,
+									}"
+								/>
+
+								@if (nombreProductoControl?.invalid && nombreProductoControl?.touched) {
+									<div class="mt-1">
+										@if (nombreProductoControl?.hasError('required')) {
+											<small class="text-red-500">El nombre del producto es requerido</small>
+										}
+									</div>
+								}
+							</div>
+						</div>
+					</div>
+
+					<!-- Description Section -->
+					<div class="mb-8">
+						<label class="block text-sm font-medium text-gray-700 mb-2">
+							<div class="flex items-center space-x-2">
+								<svg class="h-4 w-4 text-[#0071AB]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+								</svg>
+								<span>Descripción</span>
+							</div>
+						</label>
+						<textarea
+							formControlName="descripcion"
+							rows="4"
+							class="w-full outline-none px-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-[#0071AB] focus:ring focus:ring-[#0071AB]/20 transition-all duration-200"
+							[ngClass]="{
+								'border-red-500 focus:border-red-500 focus:ring-red-500':
+									descripcionProductoControl?.invalid && descripcionProductoControl?.touched,
+								'border-green-500 focus:border-green-500 focus:ring-green-500':
+									descripcionProductoControl?.valid && descripcionProductoControl?.touched,
+								'border-gray-300 focus:border-blue-500 focus:ring-blue-500': !descripcionProductoControl?.touched,
+							}"
+						></textarea>
+
+						@if (descripcionProductoControl?.invalid && descripcionProductoControl?.touched) {
+							<div class="mt-1">
+								@if (descripcionProductoControl?.hasError('required')) {
+									<small class="text-red-500">La descripcion del producto es requerido</small>
+								}
+							</div>
+						}
+					</div>
+
+					<!-- Prices and Stock Section -->
+					<div class="mb-8">
+						<h3 class="text-lg font-semibold text-gray-700 mb-4">Precios y Stock</h3>
+						<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+							<div>
+								<label class="block text-sm font-medium text-gray-700 mb-2">
+									<div class="flex items-center space-x-2">
+										<svg class="h-4 w-4 text-[#0071AB]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M12 8a3 3 0 0 0-3 2c0 1.105 1.343 2 3 2s3 .895 3 2-1.343 2-3 2m0-8v1m0 0v8m0 0v1m0-1a3 3 0 0 1-3-2m3 2a3 3 0 0 0 3-2M9.5 8h5M9.5 12h5"
+											/>
+										</svg>
+										<span>Precio de Compra</span>
+									</div>
+								</label>
+								<div class="relative">
+									<span class="absolute left-3 top-2.5 text-gray-500"> S/</span>
+									<input
+										type="number"
+										formControlName="precio_compra"
+										class="w-full outline-none pl-8 pr-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-[#0071AB] focus:ring focus:ring-[#0071AB]/20 transition-all duration-200"
+										[ngClass]="{
+											'border-red-500 focus:border-red-500 focus:ring-red-500':
+												precioCompraProductoControl?.invalid && precioCompraProductoControl?.touched,
+											'border-green-500 focus:border-green-500 focus:ring-green-500':
+												precioCompraProductoControl?.valid && precioCompraProductoControl?.touched,
+											'border-gray-300 focus:border-blue-500 focus:ring-blue-500':
+												!precioCompraProductoControl?.touched,
+										}"
+									/>
+
+									@if (precioCompraProductoControl?.invalid && precioCompraProductoControl?.touched) {
+										<div class="mt-1">
+											@if (precioCompraProductoControl?.hasError('required')) {
+												<small class="text-red-500">El precio de compra es requerido</small>
+											}
+											@if (precioCompraProductoControl?.hasError('min')) {
+												<small class="text-red-500">El precio de compra no puede ser menor a 0</small>
+											}
+										</div>
+									}
+								</div>
+							</div>
+
+							<div>
+								<label class="block text-sm font-medium text-gray-700 mb-2">
+									<div class="flex items-center space-x-2">
+										<svg class="h-4 w-4 text-[#0071AB]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M12 8a3 3 0 0 0-3 2c0 1.105 1.343 2 3 2s3 .895 3 2-1.343 2-3 2m0-8v1m0 0v8m0 0v1m0-1a3 3 0 0 1-3-2m3 2a3 3 0 0 0 3-2M9.5 8h5M9.5 12h5"
+											/>
+										</svg>
+										<span>Precio de Venta</span>
+									</div>
+								</label>
+								<div class="relative">
+									<span class="absolute left-3 top-2.5 text-gray-500"> S/</span>
+									<input
+										type="number"
+										formControlName="precio_venta"
+										class="w-full outline-none pl-8 pr-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-[#0071AB] focus:ring focus:ring-[#0071AB]/20 transition-all duration-200"
+										[ngClass]="{
+											'border-red-500 focus:border-red-500 focus:ring-red-500':
+												precioVentaProductoControl?.invalid && precioVentaProductoControl?.touched,
+											'border-green-500 focus:border-green-500 focus:ring-green-500':
+												precioVentaProductoControl?.valid && precioVentaProductoControl?.touched,
+											'border-gray-300 focus:border-blue-500 focus:ring-blue-500': !precioVentaProductoControl?.touched,
+										}"
+									/>
+
+									@if (precioVentaProductoControl?.invalid && precioVentaProductoControl?.touched) {
+										<div class="mt-1">
+											@if (precioVentaProductoControl?.hasError('required')) {
+												<small class="text-red-500">El precio de venta es requerido</small>
+											}
+											@if (precioVentaProductoControl?.hasError('min')) {
+												<small class="text-red-500">El precio de venta no puede ser menor a 0</small>
+											}
+										</div>
+									}
+								</div>
+							</div>
+
+							<div>
+								<label class="block text-sm font-medium text-gray-700 mb-2">
+									<div class="flex items-center space-x-2">
+										<svg class="h-4 w-4 text-[#0071AB]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+											/>
+										</svg>
+										<span>Stock</span>
+									</div>
+								</label>
+								<input
+									type="number"
+									formControlName="stock"
+									class="w-full outline-none px-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-[#0071AB] focus:ring focus:ring-[#0071AB]/20 transition-all duration-200"
+									[ngClass]="{
+										'border-red-500 focus:border-red-500 focus:ring-red-500':
+											stockProductoControl?.invalid && stockProductoControl?.touched,
+										'border-green-500 focus:border-green-500 focus:ring-green-500':
+											stockProductoControl?.valid && stockProductoControl?.touched,
+										'border-gray-300 focus:border-blue-500 focus:ring-blue-500': !stockProductoControl?.touched,
+									}"
+								/>
+								@if (stockProductoControl?.invalid && stockProductoControl?.touched) {
+									<div class="mt-1">
+										@if (stockProductoControl?.hasError('required')) {
+											<small class="text-red-500">El stock es requerido</small>
+										}
+										@if (stockProductoControl?.hasError('min')) {
+											<small class="text-red-500">El stock no puede ser menor a 0</small>
+										}
+									</div>
+								}
+							</div>
+						</div>
+					</div>
+
+					<!-- Selects Section -->
+					<div class="mb-8">
+						<h3 class="text-lg font-semibold text-gray-700 mb-4">Detalles Adicionales</h3>
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div>
+								<label class="block text-sm font-medium text-gray-700 mb-2">
+									<div class="flex items-center space-x-2">
+										<svg class="h-4 w-4 text-[#0071AB]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M4 6h16M4 10h16M4 14h16M4 18h16"
+											/>
+										</svg>
+										<span>Categoría</span>
+									</div>
+								</label>
+								<select
+									formControlName="id_categoria"
+									class="w-full outline-none px-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-[#0071AB] focus:ring focus:ring-[#0071AB]/20 transition-all duration-200"
+									[ngClass]="{
+										'border-red-500 focus:border-red-500 focus:ring-red-500':
+											categoriaProductoControl?.invalid && categoriaProductoControl?.touched,
+										'border-green-500 focus:border-green-500 focus:ring-green-500':
+											categoriaProductoControl?.valid && categoriaProductoControl?.touched,
+										'border-gray-300 focus:border-blue-500 focus:ring-blue-500': !categoriaProductoControl?.touched,
+									}"
+								>
+									<option value="">Seleccione una categoría</option>
+									@for (categoria of categorias; track categoria.id_categoria) {
+										<option [value]="categoria.id_categoria">
+											{{ categoria.nombre_cat }}
+										</option>
+									}
+								</select>
+
+								@if (categoriaProductoControl?.invalid && categoriaProductoControl?.touched) {
+									<div class="mt-1 text-sm text-red-500">
+										@if (categoriaProductoControl?.hasError('required')) {
+											<span>La categoría es requerida</span>
+										}
+									</div>
+								}
+							</div>
+
+							<div>
+								<label class="block text-sm font-medium text-gray-700 mb-2">
+									<div class="flex items-center space-x-2">
+										<svg class="h-4 w-4 text-[#0071AB]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+											/>
+										</svg>
+										<span>Marca</span>
+									</div>
+								</label>
+								<select
+									formControlName="id_marca"
+									class="w-full outline-none px-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-[#0071AB] focus:ring focus:ring-[#0071AB]/20 transition-all duration-200"
+									[ngClass]="{
+										'border-red-500 focus:border-red-500 focus:ring-red-500':
+											categoriaProductoControl?.invalid && categoriaProductoControl?.touched,
+										'border-green-500 focus:border-green-500 focus:ring-green-500':
+											categoriaProductoControl?.valid && categoriaProductoControl?.touched,
+										'border-gray-300 focus:border-blue-500 focus:ring-blue-500': !categoriaProductoControl?.touched,
+									}"
+								>
+									<option value="">Seleccione una marca</option>
+									@for (marca of marcas; track marca.id_marca) {
+										<option [value]="marca.id_marca">
+											{{ marca.nombre_marca }}
+										</option>
+									}
+								</select>
+
+								@if (marcaProductoControl?.invalid && marcaProductoControl?.touched) {
+									<div class="mt-1 text-sm text-red-500">
+										@if (marcaProductoControl?.hasError('required')) {
+											<span>La marca es requerida</span>
+										}
+									</div>
+								}
+							</div>
+
+							<div>
+								<label class="block text-sm font-medium text-gray-700 mb-2">
+									<div class="flex items-center space-x-2">
+										<svg class="h-4 w-4 text-[#0071AB]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+											/>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+											/>
+										</svg>
+										<span>Sucursal</span>
+									</div>
+								</label>
+								<select
+									formControlName="id_sucursal"
+									class="w-full outline-none px-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-[#0071AB] focus:ring focus:ring-[#0071AB]/20 transition-all duration-200"
+									[ngClass]="{
+										'border-red-500 focus:border-red-500 focus:ring-red-500':
+											sucursalProductoControl?.invalid && sucursalProductoControl?.touched,
+										'border-green-500 focus:border-green-500 focus:ring-green-500':
+											sucursalProductoControl?.valid && sucursalProductoControl?.touched,
+										'border-gray-300 focus:border-blue-500 focus:ring-blue-500': !sucursalProductoControl?.touched,
+									}"
+								>
+									<option value="">Seleccione una sucursal</option>
+									@for (sucursal of sucursales; track sucursal.id_sucursal) {
+										<option [value]="sucursal.id_sucursal">
+											{{ sucursal.nombre_sucursal }}
+										</option>
+									}
+								</select>
+
+								@if (sucursalProductoControl?.invalid && sucursalProductoControl?.touched) {
+									<div class="mt-1 text-sm text-red-500">
+										@if (sucursalProductoControl?.hasError('required')) {
+											<span>La sucursal es requerida</span>
+										}
+									</div>
+								}
+							</div>
+
+							<div>
+								<label class="block text-sm font-medium text-gray-700 mb-2">
+									<div class="flex items-center space-x-2">
+										<svg class="h-4 w-4 text-[#0071AB]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+											/>
+										</svg>
+										<span>Tipo de Propietario</span>
+									</div>
+								</label>
+								<select
+									formControlName="id_tipo_propietario"
+									class="w-full outline-none px-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-[#0071AB] focus:ring focus:ring-[#0071AB]/20 transition-all duration-200"
+									[ngClass]="{
+										'border-red-500 focus:border-red-500 focus:ring-red-500':
+											tipoPropietarioProductoControl?.invalid && tipoPropietarioProductoControl?.touched,
+										'border-green-500 focus:border-green-500 focus:ring-green-500':
+											tipoPropietarioProductoControl?.valid && tipoPropietarioProductoControl?.touched,
+										'border-gray-300 focus:border-blue-500 focus:ring-blue-500':
+											!tipoPropietarioProductoControl?.touched,
+									}"
+								>
+									<option value="">Seleccione un tipo de propietario</option>
+									@for (tipoPropietario of tiposPropietarios; track tipoPropietario.id_tipo_propietario) {
+										<option [value]="tipoPropietario.id_tipo_propietario">
+											{{ tipoPropietario.descripcion }}
+										</option>
+									}
+								</select>
+
+								@if (tipoPropietarioProductoControl?.invalid && tipoPropietarioProductoControl?.touched) {
+									<div class="mt-1 text-sm text-red-500">
+										@if (tipoPropietarioProductoControl?.hasError('required')) {
+											<span>La sucursal es requerida</span>
+										}
+									</div>
+								}
+							</div>
+						</div>
+					</div>
+
+					<div class="mb-8">
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<!-- Estado Producto -->
+							<div>
+								<label class="block text-sm font-medium text-gray-700 mb-2">
+									<div class="flex items-center space-x-2">
+										<svg class="h-4 w-4 text-[#0071AB]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+											/>
+										</svg>
+										<span>Disponiblidad Producto</span>
+									</div>
+								</label>
+								<select
+									formControlName="estado_produto"
+									class="w-full outline-none px-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-[#0071AB] focus:ring focus:ring-[#0071AB]/20 transition-all duration-200"
+									[ngClass]="{
+										'border-red-500 focus:border-red-500 focus:ring-red-500':
+											estadoVentaProductoControl?.invalid && estadoVentaProductoControl?.touched,
+										'border-green-500 focus:border-green-500 focus:ring-green-500':
+											estadoVentaProductoControl?.valid && estadoVentaProductoControl?.touched,
+										'border-gray-300 focus:border-blue-500 focus:ring-blue-500': !estadoVentaProductoControl?.touched,
+									}"
+								>
+									<option value="Disponible">Disponible</option>
+									<option value="Agotado">No Disponible</option>
+								</select>
+
+								@if (estadoVentaProductoControl?.invalid && estadoVentaProductoControl?.touched) {
+									<div class="mt-1 text-sm text-red-500">
+										@if (estadoVentaProductoControl?.hasError('required')) {
+											<span>El estado actual del producto es requerida</span>
+										}
+									</div>
+								}
+							</div>
+
+							<!-- Imagen del Producto -->
+							<div>
+								<label class="block text-sm font-medium text-gray-700 mb-2">
+									<div class="flex items-center space-x-2">
+										<svg class="h-4 w-4 text-[#0071AB]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+											/>
+										</svg>
+										<span>Imagen del Producto</span>
+									</div>
+								</label>
+								<input
+									formControlName="producto_img"
+									type="text"
+									class="w-full outline-none px-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-[#0071AB] focus:ring focus:ring-[#0071AB]/20 transition-all duration-200"
+									[ngClass]="{
+										'border-red-500 focus:border-red-500 focus:ring-red-500':
+											imagenProductoControl?.invalid && imagenProductoControl?.touched,
+										'border-green-500 focus:border-green-500 focus:ring-green-500':
+											imagenProductoControl?.valid && imagenProductoControl?.touched,
+										'border-gray-300 focus:border-blue-500 focus:ring-blue-500': !imagenProductoControl?.touched,
+									}"
+								/>
+
+								@if (imagenProductoControl?.invalid && imagenProductoControl?.touched) {
+									<div class="mt-1 text-sm text-red-500">
+										@if (imagenProductoControl?.hasError('required')) {
+											<span>El url del producto es requerida</span>
+										}
+									</div>
+								}
+							</div>
+							<!-- Estado Activo/Inactivo -->
+							<div>
+								<label class="block text-sm font-medium text-gray-700 mb-2">
+									<div class="flex items-center space-x-2">
+										<svg class="h-4 w-4 text-[#0071AB]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+										</svg>
+										<span>Estado del Producto</span>
+									</div>
+								</label>
+								<select
+									formControlName="is_active"
+									class="w-full outline-none px-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-[#0071AB] focus:ring focus:ring-[#0071AB]/20 transition-all duration-200"
+									[ngClass]="{
+										'border-red-500 focus:border-red-500 focus:ring-red-500':
+											estadoProductoControl?.invalid && estadoProductoControl?.touched,
+										'border-green-500 focus:border-green-500 focus:ring-green-500':
+											estadoProductoControl?.valid && estadoProductoControl?.touched,
+										'border-gray-300 focus:border-blue-500 focus:ring-blue-500': !estadoProductoControl?.touched,
+									}"
+								>
+									<option [ngValue]="true">Activo</option>
+									<option [ngValue]="false">Inactivo</option>
+								</select>
+								<div
+									*ngIf="estadoProductoControl?.invalid && estadoProductoControl?.touched"
+									class="mt-1 text-sm text-red-500"
+								>
+									<span *ngIf="estadoProductoControl?.hasError('required')">El estado del producto es requerido</span>
+								</div>
+							</div>
+
+							<!-- Fecha de Ingreso -->
+							<div>
+								<label class="block text-sm font-medium text-gray-700 mb-2">
+									<div class="flex items-center space-x-2">
+										<svg class="h-4 w-4 text-[#0071AB]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+											/>
+										</svg>
+										<span>Fecha de Ingreso</span>
+									</div>
+								</label>
+
+								<nz-date-picker
+									formControlName="fecha_ingreso"
+									[nzFormat]="'dd/MM/yyyy'"
+									class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-[#0071AB] focus:ring focus:ring-[#0071AB]/20 transition-all duration-200"
+									[ngClass]="{
+										'border-red-500 focus:border-red-500 focus:ring-red-500':
+											fechaIngresoProductoControl?.invalid && fechaIngresoProductoControl?.touched,
+										'border-green-500 focus:border-green-500 focus:ring-green-500':
+											fechaIngresoProductoControl?.valid && fechaIngresoProductoControl?.touched,
+										'border-gray-300 focus:border-blue-500 focus:ring-blue-500': !fechaIngresoProductoControl?.touched,
+									}"
+								></nz-date-picker>
+
+								@if (fechaIngresoProductoControl?.invalid && fechaIngresoProductoControl?.touched) {
+									<div class="mt-1 text-sm text-red-500">
+										@if (fechaIngresoProductoControl?.hasError('required')) {
+											<span>La fecha de ingreso es requerida</span>
+										}
+									</div>
+								}
+							</div>
+						</div>
+					</div>
+
+					<!-- Footer Actions -->
+					<div class="flex justify-end space-x-4 pt-6 border-t">
+						<button
+							type="submit"
+							[disabled]="!productoForm.valid"
+							class="px-6 py-2.5 bg-[#0071AB] text-white rounded-lg hover:bg-[#005d8f] focus:ring-2 focus:ring-[#0071AB]/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center space-x-2"
+						>
+							<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+							</svg>
+							<span>Guardar Producto</span>
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</nz-spin>

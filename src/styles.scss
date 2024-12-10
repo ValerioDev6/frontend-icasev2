@@ -1,0 +1,115 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+* {
+  @apply m-0 p-0 box-border;
+  // outline: 1px solid red;
+}
+
+
+body {
+  @apply font-normal text-base;
+}
+
+html,
+body {
+  font-family: "Outfit", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+
+}
+
+/* SweetAlert2 custom popup styling */
+.swal2-popup-custom {
+  @apply font-sans rounded-lg shadow-lg;
+}
+
+.swal2-title-custom {
+  @apply text-gray-800 text-2xl font-semibold;
+}
+
+.swal2-html-container-custom {
+  @apply text-gray-600 text-base;
+}
+
+.swal2-actions {
+  @apply flex justify-center gap-4;
+}
+
+.swal2-confirm-button-custom,
+.swal2-cancel-button-custom {
+  @apply flex-none w-auto min-w-[120px] border-none rounded-md py-2 px-6 text-base font-medium transition-all duration-300;
+}
+
+.swal2-confirm-button-custom {
+  @apply bg-red-600 text-white;
+}
+
+.swal2-confirm-button-custom:hover {
+  @apply bg-red-700 transform -translate-y-1;
+}
+
+.swal2-cancel-button-custom {
+  @apply bg-gray-600 text-white;
+}
+
+.swal2-cancel-button-custom:hover {
+  @apply bg-gray-700 transform -translate-y-1;
+}
+
+.swal2-icon.swal2-icon-show {
+  @apply border-none
+}
+
+.ant-modal-content,
+.ant-modal-header {
+  border-radius: 15px;
+}
+
+.ant-table-tbody>tr>td {
+  padding: 7px;
+}
+
+
+
+.ant-table-thead>tr>th {
+  color: rgb(240, 236, 236);
+  background-color: #4C59CF;
+}
+
+// .ant-layout-sider-children {
+//   background-color: rebeccapurple;
+// }
+
+
+.view-btn {
+  background-color: #6A6CF1;
+  border: none;
+
+  &:hover {
+    background-color: #5658d8;
+  }
+}
+
+.edit-btn {
+  background-color: #2C7787;
+  border: none;
+
+  &:hover {
+    background-color: #236473;
+  }
+}
+
+.delete-btn {
+  background-color: #EC8F98;
+  border: none;
+
+  &:hover {
+    background-color: #e57881;
+  }
+}

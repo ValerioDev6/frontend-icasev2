@@ -1,0 +1,32 @@
+.contenedor {
+  margin: 0 auto;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+
+}
+
+.login-form {
+  padding: 40px;
+  max-width: 350px;
+
+}
+
+.login-form-margin {
+  margin-bottom: 16px;
+
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}

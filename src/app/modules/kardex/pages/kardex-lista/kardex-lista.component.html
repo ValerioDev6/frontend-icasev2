@@ -1,0 +1,169 @@
+<div>
+	<nz-breadcrumb class="font-bold text-sm" [nzAutoGenerate]="true"> </nz-breadcrumb>
+</div>
+<div class="container mx-auto py-6">
+	<div class="w-full my-2 bg-white p-6 rounded-lg shadow-md border border-gray-200">
+		<!-- Encabezado de la Sección -->
+		<div class="flex items-center space-x-2 mb-6 border-b border-gray-200 pb-4">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="w-8 h-8 text-blue-500"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59L3.41 18l6-6 4 4 6.3-6.29L22 12V6z"
+				/>
+			</svg>
+			<h3 class="text-xl font-semibold text-gray-800">Kardex de Movimientos</h3>
+		</div>
+
+		<!-- Panel de Filtros -->
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+			<!-- Selector Rango de Fechas -->
+			<div>
+				<label class="block text-sm font-medium text-gray-600 mb-2">Rango de Fechas</label>
+				<nz-range-picker
+					[(ngModel)]="dateRange"
+					(ngModelChange)="filterByDateRange()"
+					class="w-full rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+					nzPlaceHolder="Seleccionar rango"
+				></nz-range-picker>
+			</div>
+
+			<!-- Selector Tipo de Movimiento -->
+			<div>
+				<label class="block text-sm font-medium text-gray-600 mb-2">Tipo Movimiento</label>
+				<nz-select
+					[(ngModel)]="tipoMovimiento"
+					(ngModelChange)="filterByTipoMovimiento($event)"
+					placeholder="Seleccione Tipo"
+					class="w-full rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+					[nzDropdownMatchSelectWidth]="false"
+				>
+					<nz-option nzValue="ENTRADA" nzLabel="Entrada"></nz-option>
+					<nz-option nzValue="SALIDA" nzLabel="Salida"></nz-option>
+				</nz-select>
+			</div>
+
+			<!-- Selector Tipo Documento -->
+			<div>
+				<label class="block text-sm font-medium text-gray-600 mb-2">Tipo Documento</label>
+				<nz-select
+					[(ngModel)]="tipoDocumento"
+					(ngModelChange)="filterByTipoDocumento($event)"
+					placeholder="Seleccione Documento"
+					class="w-full rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+					[nzDropdownMatchSelectWidth]="false"
+				>
+					<nz-option nzValue="COMPRA" nzLabel="Compra"></nz-option>
+					<nz-option nzValue="VENTA" nzLabel="Venta"></nz-option>
+				</nz-select>
+			</div>
+		</div>
+
+		<!-- Acciones con Botones -->
+		<div class="flex space-x-4 justify-start">
+			<button
+				class="flex items-center justify-center bg-red-500 hover:bg-red-600 text-white h-10 w-10 rounded-md shadow-md transition duration-200 focus:outline-none"
+				nz-tooltip
+				nzTooltipTitle="Descargar PDF"
+			>
+				<span nz-icon nzType="file-pdf" nzTheme="outline"></span>
+			</button>
+
+			<button
+				class="flex items-center justify-center bg-green-500 hover:bg-green-600 text-white h-10 w-10 rounded-md shadow-md transition duration-200 focus:outline-none"
+				nz-tooltip
+				nzTooltipTitle="Descargar Excel"
+			>
+				<span nz-icon nzType="file-excel" nzTheme="outline"></span>
+			</button>
+
+			<button
+				class="flex items-center justify-center bg-gray-500 hover:bg-gray-600 text-white h-10 w-10 rounded-lg shadow-md transition duration-200"
+				(click)="clearFilters()"
+				nz-tooltip
+				nzTooltipTitle="Limpiar Filtros"
+			>
+				<span nz-icon nzType="delete" nzTheme="fill"></span>
+			</button>
+		</div>
+	</div>
+
+	<div class="w-full overflow-hidden">
+		<nz-table
+			#basicTable
+			[nzData]="kardex"
+			[nzLoading]="loading"
+			[nzPageSize]="limit"
+			[nzTotal]="total"
+			[nzFrontPagination]="false"
+			(nzPageIndexChange)="onPageChange($event)"
+			nzShowSizeChanger
+			[nzBordered]="true"
+			[nzShowQuickJumper]="true"
+			class="w-full overflow-x-auto"
+		>
+			<thead class="sticky top-0 z-10">
+				<tr class="bg-gray-100">
+					<th nzWidth="120px" nzLeft="0px" nzColumnKey="numero_documento">N° Documento</th>
+					<th nzWidth="180px" nzColumnKey="producto">Producto</th>
+					<th nzWidth="120px" nzColumnKey="fecha_movimiento">Fecha</th>
+					<th nzWidth="100px" nzColumnKey="tipo_movimiento">Tipo</th>
+					<th nzWidth="100px" nzColumnKey="cantidad">Cantidad</th>
+					<th nzWidth="100px" nzColumnKey="precio_unitario">P. Unitario</th>
+					<th nzWidth="100px" nzColumnKey="total">Total</th>
+					<th nzWidth="100px" nzColumnKey="stock_anterior">Stock Anterior</th>
+					<th nzWidth="100px" nzRight="0px" nzColumnKey="stock_actual">Stock Actual</th>
+					<th nzWidth="100px" nzRight="0px" class="bg-gray-100">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (item of kardex; track item.id_kardex) {
+					<tr>
+						<td nzLeft="0px">{{ item.numero_documento }}</td>
+						<td>{{ item.tb_productos.nombre_producto }}</td>
+						<td>{{ item.fecha_movimiento | date: 'dd/MM/yyyy' }}</td>
+						<td class="font-bold">
+							<nz-tag [nzColor]="item.tipo_movimiento === 'ENTRADA' ? 'green' : 'blue'">
+								{{ item.tipo_movimiento }}
+							</nz-tag>
+						</td>
+						<td class="text-right">{{ item.cantidad | number: '1.0-0' }}</td>
+						<td class="text-right">{{ item.precio_unitario | currency: 'S/ ' }}</td>
+						<td class="text-right">{{ item.total | currency: 'S/ ' }}</td>
+						<td class="text-right">{{ item.stock_anterior | number: '1.0-0' }}</td>
+						<td class="text-right">{{ item.stock_actual | number: '1.0-0' }}</td>
+						<td nzRight="0px" nzAlign="center" class="bg-white">
+							<nz-space [nzSize]="8">
+								<ng-container *nzSpaceItem>
+									<button
+										(click)="deleteKardex(item)"
+										nz-button
+										nzType="primary"
+										nzDanger
+										nzShape="circle"
+										nzSize="small"
+										nz-tooltip
+										nzTooltipTitle="Eliminar"
+									>
+										<span nz-icon nzType="delete" nzTheme="outline"></span>
+									</button>
+								</ng-container>
+							</nz-space>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</nz-table>
+	</div>
+
+	<div class="mt-4 text-right text-sm text-gray-600">
+		<strong>Total de Movimientos: {{ total }}</strong>
+	</div>
+</div>

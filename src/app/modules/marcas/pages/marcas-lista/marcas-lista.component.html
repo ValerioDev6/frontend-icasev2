@@ -1,0 +1,118 @@
+<div>
+	<nz-breadcrumb class="font-bold text-sm text-white" [nzAutoGenerate]="true"> </nz-breadcrumb>
+</div>
+<div class="container mx-auto py-6">
+	<div class="flex flex-col md:flex-row justify-between items-center mb-6">
+		<h1 class="text-xl font-semibold text-gray-800 mb-4 md:mb-0 flex items-center">
+			<i nz-icon nzType="tag" nzTheme="outline" class="text-2xl mr-2"></i>
+
+			Gestión de Marcas
+		</h1>
+
+		<div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+			<nz-input-group [nzSuffix]="suffixIconSearch" class="w-full md:w-64">
+				<input type="text" nz-input placeholder="Buscar marca" [(ngModel)]="search" (keyup.enter)="searchTo()" />
+			</nz-input-group>
+			<ng-template #suffixIconSearch>
+				<span nz-icon nzType="search"></span>
+			</ng-template>
+			<div class="flex">
+				<button
+					(click)="refreshPage()"
+					nz-tooltip
+					nzTooltipTitle="Refrescar"
+					class="flex items-center justify-center h-9 px-3 bg-[#22c55e] hover:bg-[#1ea352] transition-colors"
+				>
+					<span nz-icon nzType="sync" nzTheme="outline" class="text-white text-lg font-bold"></span>
+				</button>
+
+				<button
+					(click)="downloadPDF()"
+					nz-tooltip
+					nzTooltipTitle="Descargar PDF"
+					class="flex items-center justify-center h-9 px-3 bg-red-500 hover:bg-red-600 transition-colors"
+				>
+					<span nz-icon nzType="file-pdf" nzTheme="fill" class="text-white text-lg font-bold"></span>
+				</button>
+
+				<button
+					(click)="descargarExcel()"
+					nz-tooltip
+					nzTooltipTitle="Descargar Excel"
+					class="flex items-center justify-center h-9 px-3 bg-[#1D6F42] hover:bg-[#185c37] transition-colors"
+				>
+					<span nz-icon nzType="file-excel" nzTheme="fill" class="text-white text-lg font-bold"></span>
+				</button>
+
+				<button
+					(click)="openAgregarMarcaModal()"
+					class="flex items-center justify-center h-9 px-4 bg-[#6366f1] hover:bg-[#5558e4] transition-colors"
+				>
+					<span nz-icon nzType="plus-circle" nzTheme="fill" class="text-white text-lg font-bold mr-2"></span>
+					<span class="text-white font-medium">Crear</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<nz-table
+		#basicTable
+		[nzData]="marcas"
+		[nzLoading]="loading"
+		[nzPageSize]="limit"
+		[nzTotal]="total"
+		[nzFrontPagination]="false"
+		(nzPageIndexChange)="onPageChange($event)"
+		nzShowSizeChanger
+		[nzBordered]="true"
+		[nzShowQuickJumper]="true"
+	>
+		<thead>
+			<tr class="bg-gray-100">
+				<th nzColumnKey="Nombre Rol" class="font-semibold text-gray-700">Marca</th>
+				<th nzColumnKey="estado" class="font-semibold text-gray-700">Estado</th>
+				<th nzColumnKey="estado" class="font-semibold text-gray-700">Fecha Creación</th>
+				<th class="font-semibold text-gray-700">Acciones</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let marca of basicTable.data" class="hover:bg-gray-50">
+				<td class="font-medium text-gray-800">{{ marca.nombre_marca }}</td>
+				<td>
+					<nz-tag [nzColor]="marca.estado ? 'success' : 'error'" class="rounded-full px-3 py-1">
+						{{ marca.estado ? 'Activo' : 'Inactivo' }}
+					</nz-tag>
+				</td>
+				<td class="text-gray-600">{{ marca.created_at | date: 'MMM d, y, h:mm a' }}</td>
+				<td nzAlign="left">
+					<nz-space [nzSize]="8">
+						<ng-container *nzSpaceItem>
+							<button
+								nz-tooltip
+								nzTooltipTitle="Editar"
+								class="edit-btn flex items-center justify-center w-8 h-7"
+								(click)="openEditarModal(marca)"
+							>
+								<span nz-icon nzType="edit" nzTheme="fill" class="text-white"></span>
+							</button>
+						</ng-container>
+						<ng-container *nzSpaceItem>
+							<button
+								nz-tooltip
+								class="delete-btn flex items-center justify-center w-8 h-7"
+								nzTooltipTitle="Eliminar"
+								(click)="deleteMarca(marca)"
+							>
+								<span nz-icon nzType="delete" nzTheme="fill" class="text-white"></span>
+							</button>
+						</ng-container>
+					</nz-space>
+				</td>
+			</tr>
+		</tbody>
+	</nz-table>
+
+	<div class="mt-4 text-right text-sm text-gray-600">
+		<strong>Total de Marcas: {{ total }}</strong>
+	</div>
+</div>

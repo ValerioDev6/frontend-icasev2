@@ -1,0 +1,295 @@
+<div>
+	<div class="max-w-4xl mx-auto">
+		<form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="bg-white p-8 rounded-2xl shadow-xl">
+			<!-- Header -->
+			<div class="flex items-center gap-3 mb-8 border-b pb-6">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-8 w-8 text-blue-600"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+					/>
+				</svg>
+				<h2 class="text-2xl font-bold text-gray-900">Perfil de Usuario</h2>
+			</div>
+
+			<div class="space-y-8">
+				<!-- Nombres -->
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+					<!-- Nombres -->
+					<div class="form-group relative">
+						<label for="nombres" class="block text-sm font-semibold text-gray-700 mb-2">Nombres</label>
+						<div class="relative">
+							<input
+								type="text"
+								formControlName="nombres"
+								class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border-2 border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 outline-none"
+								placeholder="Ingrese sus nombres"
+							/>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+								/>
+							</svg>
+						</div>
+					</div>
+
+					<!-- Apellido Paterno -->
+					<div class="form-group relative">
+						<label for="apellidoPaterno" class="block text-sm font-semibold text-gray-700 mb-2">Apellido Paterno</label>
+						<div class="relative">
+							<input
+								type="text"
+								formControlName="apellidoPaterno"
+								class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border-2 border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 outline-none"
+								placeholder="Apellido paterno"
+							/>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+								/>
+							</svg>
+						</div>
+					</div>
+
+					<!-- Apellido Materno -->
+					<div class="form-group relative">
+						<label for="apellidoMaterno" class="block text-sm font-semibold text-gray-700 mb-2">Apellido Materno</label>
+						<div class="relative">
+							<input
+								type="text"
+								formControlName="apellidoMaterno"
+								class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border-2 border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 outline-none"
+								placeholder="Apellido materno"
+							/>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+								/>
+							</svg>
+						</div>
+					</div>
+				</div>
+
+				<!-- Género y Email -->
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<div class="form-group relative">
+						<label for="genero" class="block text-sm font-semibold text-gray-700 mb-2">Género</label>
+						<div class="relative">
+							<select
+								formControlName="genero"
+								class="w-full pl-10 pr-10 py-3 rounded-xl bg-gray-50 border-2 border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 appearance-none outline-none"
+							>
+								<option value="" disabled selected>Seleccione un género</option>
+								<option value="M">Masculino</option>
+								<option value="F">Femenino</option>
+								<option value="O">Otro</option>
+							</select>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+								/>
+							</svg>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-5 w-5 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+							</svg>
+						</div>
+					</div>
+
+					<div class="form-group relative">
+						<label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Correo Electrónico</label>
+						<div class="relative">
+							<input
+								type="email"
+								formControlName="email"
+								class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border-2 border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 outline-none"
+								placeholder="correo@ejemplo.com"
+							/>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+								/>
+							</svg>
+						</div>
+					</div>
+				</div>
+
+				<!-- Fecha y País -->
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<div class="form-group relative">
+						<label for="fechaNacimiento" class="block text-sm font-semibold text-gray-700 mb-2"
+							>Fecha de Nacimiento</label
+						>
+						<div class="relative">
+							<input
+								type="date"
+								formControlName="fechaNacimiento"
+								class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border-2 border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 outline-none"
+							/>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+								/>
+							</svg>
+						</div>
+					</div>
+
+					<div class="form-group relative">
+						<label for="pais" class="block text-sm font-semibold text-gray-700 mb-2">País</label>
+						<div class="relative">
+							<select
+								formControlName="pais"
+								class="w-full pl-10 pr-10 py-3 rounded-xl bg-gray-50 border-2 border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 appearance-none outline-none"
+							>
+								<option value="" disabled selected>Seleccione un país</option>
+								<option value="PE">Perú</option>
+								<option value="CO">Colombia</option>
+								<option value="CL">Chile</option>
+								<option value="AR">Argentina</option>
+								<option value="MX">México</option>
+							</select>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+								/>
+							</svg>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-5 w-5 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+							</svg>
+						</div>
+					</div>
+				</div>
+
+				<!-- Dirección -->
+				<div class="form-group relative">
+					<label for="direccion" class="block text-sm font-semibold text-gray-700 mb-2">Dirección</label>
+					<div class="relative">
+						<input
+							type="text"
+							formControlName="direccion"
+							class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border-2 border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 outline-none"
+							placeholder="Ingrese su dirección"
+						/>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+							/>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+							/>
+						</svg>
+					</div>
+				</div>
+			</div>
+			<!-- Botones Mejorados -->
+			<div class="flex justify-end space-x-4 mt-8 pt-6 border-t">
+				<button
+					type="button"
+					class="px-6 py-3 rounded-xl border-2 border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+				>
+					Cancelar
+				</button>
+				<button
+					type="submit"
+					class="px-6 py-3 rounded-xl bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200"
+				>
+					Guardar Cambios
+				</button>
+			</div>
+		</form>
+	</div>
+</div>

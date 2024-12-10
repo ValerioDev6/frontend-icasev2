@@ -1,0 +1,155 @@
+<nz-breadcrumb class="text-sm text-gray-600 mb-4" [nzAutoGenerate]="true"> </nz-breadcrumb>
+<div class="flex justify-end">
+	<button
+		(click)="downloadPDF()"
+		class="flex px-2 py-1.5 items-center bg-[#6366F1] gap-2 text-white font-bold"
+		[disabled]="isDownloading"
+	>
+		<span nz-icon [nzType]="isDownloading ? 'loading' : 'download'"></span>
+		{{ isDownloading ? 'Descargando...' : 'Descargar' }}
+	</button>
+
+	<button
+		(click)="back()"
+		class="flex px-2 py-1.5 items-center gap-2 bg-gray-200 text-gray-700 font-bold hover:bg-gray-300"
+	>
+		<span nz-icon nzType="arrow-left"></span>
+		atrás
+	</button>
+</div>
+
+@if (proveedor) {
+	<div class="container mx-auto px-4 py-6">
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+			<!-- <-- Cliente Profile Card -->
+			<div class="md:col-span-1">
+				<div class="bg-white shadow-lg rounded-lg overflow-hidden">
+					<div class="bg-gray-100 px-6 py-4 border-b border-gray-200">
+						<div class="flex items-center space-x-4">
+							<div class="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center">
+								<img width="100" height="100" src="https://img.icons8.com/plasticine/100/supplier.png" alt="supplier" />
+							</div>
+							<div>
+								<h3 class="font-bold text-xl text-gray-800">{{ obtenerNombreMostrar(proveedor) }}</h3>
+							</div>
+						</div>
+					</div>
+
+					<div class="p-6">
+						<div class="space-y-4">
+							<div class="flex justify-between items-center">
+								<span class="text-gray-500">Identificación del proveedor</span>
+								<span class="font-medium text-gray-800">{{ proveedor.tb_personas.numero_documento }}</span>
+							</div>
+							<div class="flex justify-between items-center">
+								<span class="text-gray-500">Nombre / Razon social</span>
+								<h3 class="font-medium text-gray-800">{{ obtenerNombreMostrar(proveedor) }}</h3>
+							</div>
+							<div class="flex justify-between items-center">
+								<span class="text-gray-500">Correo electrónico</span>
+								<span class="font-medium text-gray-800">{{ proveedor.tb_personas.correo }}</span>
+							</div>
+							<div class="flex justify-between items-center">
+								<span class="text-gray-500">Número de contacto</span>
+								<span class="font-medium text-gray-800">{{ proveedor.tb_personas.telefono }}</span>
+							</div>
+							<div class="flex justify-between items-center">
+								<span class="text-gray-500">Nombre de empresa</span>
+								<span class="font-medium text-gray-800">{{ proveedor.nombre_comercial }}</span>
+							</div>
+
+							<div class="flex justify-between items-center">
+								<span class="text-gray-500">Dirección</span>
+								<span class="font-medium text-gray-800">
+									{{ proveedor.tb_personas.tb_direccion.direccion }}
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<button
+						class="w-full p-4  font-medium {{
+							proveedor.estado_proveedor === 'Activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+						}}"
+					>
+						{{ proveedor.estado_proveedor }}
+					</button>
+				</div>
+			</div>
+
+			<!--  Compras Section -->
+
+			<div class="md:col-span-2">
+				<div class="bg-white shadow-lg rounded-xl border border-gray-100">
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+						<!-- Card Azul  -->
+						<div class="bg-blue-500 text-white rounded-lg p-6 shadow-md">
+							<div class="text-lg font-semibold">Compra total</div>
+							<div class="flex justify-between text-sm mt-2">
+								<p>Total de compras</p>
+								<p>{{ proveedor.total_compras | peruvianCurrency }}</p>
+							</div>
+
+							<div class="border-t border-blue-300 my-4"></div>
+							<div class="text-2xl font-bold text-right">Total: {{ proveedor.total_compras | peruvianCurrency }}</div>
+						</div>
+
+						<!-- Card Roja  -->
+						<div class="bg-red-500 text-white rounded-lg p-6 shadow-md">
+							<div class="text-lg font-semibold">Ultima compra</div>
+
+							<div class="flex justify-between text-sm">
+								<p>Realizada</p>
+								<p>{{ proveedor.ultima_compra | dateFormat }}</p>
+							</div>
+							<div class="border-t border-red-300 my-4"></div>
+							<div class="text-2xl font-bold text-right">Fecha: {{ proveedor.ultima_compra | date: 'dd-MM-yyyy' }}</div>
+						</div>
+					</div>
+
+					<!-- <-- Tabla -->
+					<div class="w-full p-6">
+						<table class="min-w-full border-collapse shadow-md">
+							<thead class="bg-gray-100">
+								<tr>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+										N° de compra
+									</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+										Total parcial
+									</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IGV</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+										Total neto
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								@for (compra of proveedor.tb_compra; track compra.id_compra; let i = $index) {
+									<tr>
+										<td class="px-6 py-3 text-sm text-gray-900">{{ i + 1 }}</td>
+										<td class="px-6 py-3 text-sm text-gray-900">{{ compra.numero_documento }}</td>
+										<td class="px-6 py-3 text-sm text-gray-500">{{ compra.fecha_compra | date: 'dd/MM/yyyy' }}</td>
+										<td class="px-6 py-3 text-sm text-gray-500">{{ compra.compra_subtotal }}</td>
+										<td class="px-6 py-3 text-sm text-gray-500">{{ compra.compra_igv }}</td>
+										<td class="px-6 py-3 text-sm text-gray-500">{{ compra.compra_total }}</td>
+									</tr>
+								} @empty {
+									<tr>
+										<td colspan="7" class="px-6 py-3 text-center text-sm text-gray-500">
+											No hay compras realizadas...
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+} @else {
+	<p>Cargando datos proveedor</p>
+}

@@ -1,0 +1,211 @@
+@if (personalData) {
+	<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+				<!-- Profile Card -->
+				<div class="lg:col-span-1">
+					<div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+						<!-- Profile Header -->
+						<div class="relative">
+							<div class="h-32 bg-gradient-to-r from-blue-500 to-blue-600"></div>
+							<div class="absolute -bottom-12 inset-x-0 flex justify-center">
+								<div class="ring-4 ring-white rounded-full">
+									<img
+										[src]="personalData.personal_img || '/assets/images/default-avatar.png'"
+										[alt]="personalData.tb_personas.nombres"
+										class="w-24 h-24 rounded-full object-cover bg-gray-100"
+										onerror="this.src='/assets/images/default-avatar.png'"
+									/>
+								</div>
+							</div>
+						</div>
+
+						<!-- Profile Info -->
+						<div class="pt-16 pb-6 px-6">
+							<div class="text-center">
+								<h2 class="text-xl font-bold text-gray-900">
+									{{ personalData.tb_personas.nombres }} {{ personalData.tb_personas.apellido_paterno }}
+									{{ personalData.tb_personas.apellido_materno }}
+								</h2>
+								<p class="text-sm font-medium text-gray-600 mt-1">
+									{{ personalData.tb_rol.nombre_rol }}
+								</p>
+							</div>
+
+							<!-- Action Buttons -->
+							<div class="mt-6 flex gap-3 justify-center">
+								<a
+									[href]="'mailto:' + personalData.email"
+									class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class="h-5 w-5 mr-2"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+										/>
+									</svg>
+									Contactar
+								</a>
+							</div>
+
+							<!-- Personal Details -->
+							<div class="mt-8">
+								<h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Datos Personales</h3>
+								<dl class="mt-4 space-y-4">
+									<div class="flex items-start">
+										<dt class="text-sm font-medium text-gray-500 flex-shrink-0">Email:</dt>
+										<dd class="ml-4 text-sm text-gray-900">{{ personalData.email }}</dd>
+									</div>
+									<div class="flex items-start">
+										<dt class="text-sm font-medium text-gray-500 flex-shrink-0">Nacimiento:</dt>
+										<dd class="ml-4 text-sm text-gray-900">
+											{{ personalData.tb_personas.fecha_nacimiento | date: 'dd/MM/yyyy' }}
+										</dd>
+									</div>
+									<div class="flex items-start">
+										<dt class="text-sm font-medium text-gray-500 flex-shrink-0">Sexo:</dt>
+										<dd class="ml-4 text-sm text-gray-900">
+											{{ personalData.tb_personas.tb_sexo.sexo }}
+										</dd>
+									</div>
+									<div class="flex items-start">
+										<dt class="text-sm font-medium text-gray-500 flex-shrink-0">Documento:</dt>
+										<dd class="ml-4 text-sm text-gray-900">
+											{{ personalData.tb_personas.tb_tipo_documento.documento }}
+										</dd>
+									</div>
+								</dl>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Details Section -->
+				<div class="lg:col-span-2 space-y-6">
+					<!-- Location Card -->
+					<div class="bg-white rounded-2xl shadow-lg p-6">
+						<h3 class="text-lg font-bold text-gray-900 flex items-center">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-5 w-5 mr-2 text-blue-500"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+								/>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+								/>
+							</svg>
+							Ubicación
+						</h3>
+						<div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div>
+								<h4 class="text-sm font-medium text-gray-500">Dirección</h4>
+								<p class="mt-2 text-sm text-gray-900">
+									{{ personalData.tb_personas.tb_direccion.direccion }}
+								</p>
+							</div>
+							<div>
+								<h4 class="text-sm font-medium text-gray-500">País</h4>
+								<p class="mt-2 text-sm text-gray-900">
+									{{ personalData.tb_personas.tb_pais.nombre }}
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<!-- Contact Info Card -->
+					<div class="bg-white rounded-2xl shadow-lg p-6">
+						<h3 class="text-lg font-bold text-gray-900 flex items-center">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-5 w-5 mr-2 text-blue-500"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+								/>
+							</svg>
+							Información de Contacto
+						</h3>
+						<div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div>
+								<h4 class="text-sm font-medium text-gray-500">
+									{{ personalData.tb_personas.tb_tipo_telefono!.tipo_telefono || 'Tipo no especificado' }}
+								</h4>
+								<p class="mt-2 text-sm text-gray-900">
+									{{ personalData.tb_personas.tb_telefonos_persona[0].numero_telefono || 'No disponible' }}
+								</p>
+							</div>
+							<div>
+								<h4 class="text-sm font-medium text-gray-500">Email</h4>
+								<p class="mt-2 text-sm text-gray-900">
+									{{ personalData.email || 'No disponible' }}
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<!-- Professional Info Card -->
+					<div class="bg-white rounded-2xl shadow-lg p-6">
+						<h3 class="text-lg font-bold text-gray-900 flex items-center">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-5 w-5 mr-2 text-blue-500"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+								/>
+							</svg>
+							Información Profesional
+						</h3>
+						<div class="mt-4 space-y-4">
+							<div>
+								<h4 class="text-sm font-medium text-gray-500">Rol</h4>
+								<p class="mt-2 text-sm text-gray-900">{{ personalData.tb_rol.nombre_rol }}</p>
+								<p class="mt-1 text-sm text-gray-500">{{ personalData.tb_rol.descripcion }}</p>
+							</div>
+							<div>
+								<h4 class="text-sm font-medium text-gray-500">Estado</h4>
+								<span
+									[class]="personalData.estado ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+									class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-2"
+								>
+									{{ personalData.estado ? 'Activo' : 'Inactivo' }}
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}

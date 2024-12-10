@@ -1,0 +1,97 @@
+<form nz-form [formGroup]="rolForm" (ngSubmit)="guardarRol()" class="space-y-6">
+	<!-- Nombre del Rol -->
+	<div class="flex flex-col">
+		<nz-form-label [nzSpan]="24" nzFor="nombre" class="text-gray-700 font-semibold">
+			<span nz-icon nzType="user" nzTheme="outline" class="mr-2"></span>Nombre del Rol
+		</nz-form-label>
+		<input
+			id="nombre"
+			formControlName="nombre_rol"
+			type="text"
+			placeholder="Ingrese nombre del rol"
+			[ngClass]="{
+				'border-red-500': nombreRolControl?.invalid && (nombreRolControl?.dirty || nombreRolControl?.touched),
+				'border-green-500': nombreRolControl?.valid && (nombreRolControl?.dirty || nombreRolControl?.touched),
+				'border-gray-300': !(nombreRolControl?.dirty || nombreRolControl?.touched),
+			}"
+			class="border rounded-lg p-2 transition duration-300 ease-in-out focus:outline-none focus:ring-0"
+		/>
+		@if (nombreRolControl?.invalid && (nombreRolControl?.dirty || nombreRolControl?.touched)) {
+			<div class="text-red-500 mt-1">
+				@if (nombreRolControl?.errors?.['required']) {
+					<small>El nombre del rol es requerido.</small>
+				}
+				@if (nombreRolControl?.errors?.['minlength']) {
+					<small>El nombre debe tener al menos 6 caracteres.</small>
+				}
+			</div>
+		}
+	</div>
+
+	<!-- Descripción del Rol -->
+	<div class="flex flex-col">
+		<nz-form-label [nzSpan]="24" nzFor="descripcion" class="text-gray-700 font-semibold">
+			<span nz-icon nzType="file-text" nzTheme="outline" class="mr-2"></span>Descripción
+		</nz-form-label>
+		<textarea
+			id="descripcion"
+			formControlName="descripcion"
+			placeholder="Ingrese descripción"
+			[ngClass]="{
+				'border-red-500': descripcionControl?.invalid && (descripcionControl?.dirty || descripcionControl?.touched),
+				'border-green-500': descripcionControl?.valid && (descripcionControl?.dirty || descripcionControl?.touched),
+				'border-gray-300': !(descripcionControl?.dirty || descripcionControl?.touched),
+			}"
+			class="border rounded-lg p-2 transition duration-300 ease-in-out focus:outline-none focus:ring-0"
+			rows="3"
+		></textarea>
+		@if (descripcionControl?.invalid && (descripcionControl?.dirty || descripcionControl?.touched)) {
+			<div class="text-red-500 mt-1">
+				@if (descripcionControl?.errors?.['required']) {
+					<small>La descripción es requerida.</small>
+				}
+				@if (descripcionControl?.errors?.['minlength']) {
+					<small>La descripción debe tener al menos 6 caracteres.</small>
+				}
+			</div>
+		}
+	</div>
+
+	<!-- Estado del Rol -->
+	<div class="flex flex-col">
+		<label class="text-gray-700 font-semibold mb-2 flex items-center">
+			<span nz-icon nzType="check-circle" nzTheme="outline" class="mr-2"></span>Estado
+		</label>
+		<nz-radio-group formControlName="estado" class="flex space-x-4">
+			<label nz-radio [nzValue]="true" class="flex items-center">
+				<span class="ml-2">Activo</span>
+			</label>
+			<label nz-radio [nzValue]="false" class="flex items-center">
+				<span class="ml-2">Inactivo</span>
+			</label>
+		</nz-radio-group>
+	</div>
+
+	<!-- Botones de Acción -->
+	<div class="flex justify-end mt-6 space-x-4">
+		<button
+			nz-button
+			nzType="primary"
+			type="submit"
+			[disabled]="rolForm.invalid"
+			class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center space-x-2 transition duration-300 ease-in-out focus:outline-none focus:ring-0"
+		>
+			<span nz-icon nzType="save" nzTheme="outline"></span>
+			<span>Guardar</span>
+		</button>
+		<button
+			nz-button
+			nzType="default"
+			(click)="cancelar($event)"
+			class="border border-gray-300 text-gray-700 hover:bg-gray-100 font-semibold py-2 px-4 rounded-lg flex items-center space-x-2 transition duration-300 ease-in-out focus:outline-none focus:ring-0"
+		>
+			<span nz-icon nzType="close" nzTheme="outline"></span>
+			<span>Cancelar</span>
+		</button>
+	</div>
+</form>

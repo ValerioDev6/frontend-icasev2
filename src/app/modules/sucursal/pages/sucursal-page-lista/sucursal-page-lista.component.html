@@ -1,0 +1,73 @@
+<div>
+	<nz-breadcrumb class="font-bold text-sm" [nzAutoGenerate]="true"> </nz-breadcrumb>
+</div>
+<div class="container mx-auto py-6">
+	<div class="flex flex-col md:flex-row justify-between items-center mb-6">
+		<h3 class="text-xl font-semibold text-gray-800 mb-4 md:mb-0 flex items-center">Gestión de Sucursales</h3>
+
+		<div class="flex items-center space-x-4">
+			<nz-input-group [nzSuffix]="suffixIconSearch" class="w-64">
+				<input type="text" nz-input placeholder="Buscar sucursales" [(ngModel)]="search" (keyup.enter)="searchTo()" />
+			</nz-input-group>
+			<ng-template #suffixIconSearch>
+				<span nz-icon nzType="search"></span>
+			</ng-template>
+			<button
+				(click)="openAgregarSucursalModal()"
+				nz-button
+				nzType="primary"
+				class="h-10 px-4 rounded-lg uppercase font-bold bg-mantis-600 border-none hover:bg-mantis-500 focus:ring-2 focus:ring-mantis-400 transition"
+			>
+				<span nz-icon nzType="plus"></span>
+				<span>Agregar</span>
+			</button>
+		</div>
+	</div>
+
+	<nz-table
+		#basicTable
+		[nzData]="sucursales"
+		[nzLoading]="loading"
+		[nzPageSize]="limit"
+		[nzTotal]="total"
+		[nzFrontPagination]="false"
+		(nzPageIndexChange)="onPageChange($event)"
+		nzShowSizeChanger
+		[nzShowQuickJumper]="true"
+	>
+		<thead>
+			<tr>
+				<th nzColumnKey="Nombre Rol">Sucursal</th>
+				<th nzColumnKey="Telefono">Telefono</th>
+				<th nzColumnKey="Email">Email</th>
+				<th nzColumnKey="Direccion">Direccion</th>
+				<th nzColumnKey="Pais">Pais</th>
+				<th>Acciones</th>
+			</tr>
+		</thead>
+		<tbody>
+			@for (sucursal of basicTable.data; track sucursal.id_sucursal) {
+				<tr>
+					<td>{{ sucursal.nombre_sucursal }}</td>
+					<td>{{ sucursal.telefono }}</td>
+					<td>{{ sucursal.email }}</td>
+					<td>{{ sucursal.tb_direccion.direccion }}</td>
+					<td>{{ sucursal.tb_pais.nombre }}</td>
+
+					<td>
+						<a nz-tooltip nzTooltipTitle="Editar" (click)="openEditarModal(sucursal)" nz-button nzType="link">
+							<span nz-icon nzType="edit" nzTheme="outline"></span>
+						</a>
+						<a nz-tooltip nzTooltipTitle="Eliminar" (click)="deleteSucursal(sucursal)" nz-button nzType="link" nzDanger>
+							<span nz-icon nzType="delete" nzTheme="outline"></span>
+						</a>
+					</td>
+				</tr>
+			} 
+		</tbody>
+	</nz-table>
+
+	<div class="mt-4 text-right text-sm text-gray-600">
+		<strong>Total de Sucursales: {{ total }}</strong>
+	</div>
+</div>

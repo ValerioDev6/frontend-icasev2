@@ -1,0 +1,164 @@
+<div class="p-6 h-[700px]">
+	<!-- Header -->
+	<div class="flex items-start gap-6 mb-6 pb-4 border-b border-gray-200">
+		<!-- Store Info -->
+		<div class="flex-1">
+			<div class="flex items-center gap-3">
+				<div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
+					<img src="./assets/icase-logo.jpeg" alt="logo de icase store" class="rounded-full" />
+				</div>
+				<div>
+					<h2 class="text-2xl font-bold text-blue-600">Icase's Store</h2>
+					<p class="text-gray-500">Sistema de Gestión de Ventas</p>
+				</div>
+			</div>
+			<div class="mt-4 text-gray-600">
+				<p>Especialistas en accesorios de computación y móviles</p>
+				<p class="mt-1">Productos de alta calidad y garantía asegurada</p>
+			</div>
+		</div>
+
+		<!-- Purchase Info -->
+		<div class="bg-gray-50 p-4 rounded-lg">
+			<h3 class="font-semibold text-gray-700 mb-2">Información de Compra</h3>
+			<div class="space-y-1">
+				<p class="text-sm text-blue-600 mt-2">
+					<span class="inline-flex items-center">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-4 w-4 mr-1"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+							/>
+						</svg>
+						Compra verificada
+					</span>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- Product Categories Banner -->
+	<div class="mb-6 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-4 text-white">
+		<div class="flex items-center justify-between">
+			<div class="flex items-center gap-3">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+					/>
+				</svg>
+				<div>
+					<h3 class="font-semibold text-lg">Detalles de tu Compra</h3>
+					<p class="text-blue-100">Productos seleccionados con garantía de calidad</p>
+				</div>
+			</div>
+			<div class="text-right">
+				<span class="text-sm bg-white/20 px-3 py-1 rounded-full"> Estado: Completada </span>
+			</div>
+		</div>
+	</div>
+
+	<!-- Table -->
+	<nz-table
+		[nzData]="detalles"
+		[nzTotal]="total"
+		[nzLoading]="loading"
+		[nzPageSize]="pageSize"
+		[nzShowTotal]="totalTemplate"
+		(nzPageIndexChange)="onPageChange($event)"
+		class="bg-white rounded-lg shadow-sm"
+	>
+		<thead>
+			<tr class="bg-blue-600">
+				<th class="text-white font-semibold">Producto</th>
+				<th class="text-white font-semibold">Categoría</th>
+				<th class="text-white font-semibold text-center">Cantidad</th>
+				<th class="text-white font-semibold text-right">Precio Unitario</th>
+				<th class="text-white font-semibold text-right">Subtotal</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let detalle of detalles" class="hover:bg-gray-50">
+				<td class="py-3">
+					<div class="flex items-center gap-3">
+						<div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-6 w-6 text-gray-400"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"
+								/>
+							</svg>
+						</div>
+						<div>
+							<p class="font-medium">{{ detalle.tb_productos.nombre_producto }}</p>
+							<p class="text-sm text-gray-500">COD: {{ detalle.tb_productos.id_producto }}</p>
+						</div>
+					</div>
+				</td>
+				<td>
+					<span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-full text-sm">
+						{{ detalle.tb_categorias.nombre_cat }}
+					</span>
+				</td>
+				<td class="text-center">{{ detalle.cantidad }}</td>
+				<td class="text-right">{{ detalle.precio_unitario | currency: 'PEN ' : 'symbol-narrow' }}</td>
+				<td class="text-right">{{ detalle.subtotal | currency: 'PEN ' : 'symbol-narrow' }}</td>
+			</tr>
+		</tbody>
+	</nz-table>
+
+	<!-- Resumen -->
+	<ng-template #totalTemplate>
+		<div *ngIf="resumen" class="flex justify-end mt-6">
+			<div class="bg-gray-50 p-4 rounded-lg w-[300px]">
+				<h4 class="font-semibold text-gray-700 mb-3">Resumen de Compra</h4>
+				<div class="space-y-2">
+					<div class="flex justify-between">
+						<span class="text-gray-600">Total Items:</span>
+						<span class="font-semibold">{{ resumen.cantidad_items }}</span>
+					</div>
+					<div class="flex justify-between">
+						<span class="text-gray-600">Subtotal:</span>
+						<span class="font-semibold">{{ resumen.monto_subtotal | currency: 'PEN ' : 'symbol-narrow' }}</span>
+					</div>
+					<div class="flex justify-between">
+						<span class="text-gray-600">IGV (18%):</span>
+						<span class="font-semibold">{{ resumen.monto_igv | currency: 'PEN ' : 'symbol-narrow' }}</span>
+					</div>
+					<div class="flex justify-between pt-2 border-t border-gray-200">
+						<span class="text-gray-600">Monto Total:</span>
+						<span class="font-bold text-lg text-blue-600">{{
+							resumen.monto_total | currency: 'PEN ' : 'symbol-narrow'
+						}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ng-template>
+	<!-- Footer -->
+	<div class="flex justify-between mt-6 pt-4 border-t border-gray-200">
+		<div class="text-sm text-gray-500">
+			<p>Gracias por tu compra en Icase's Store</p>
+			<p>Para soporte: support&#64;icases-store.com</p>
+		</div>
+		<button nz-button nzType="primary" class="px-6" (click)="closeModal()">Aceptar</button>
+	</div>
+</div>

@@ -1,0 +1,95 @@
+<form nz-form [formGroup]="formGroup" (ngSubmit)="onUpdateRol()" class="space-y-6">
+	<!-- Nombre del Rol -->
+	<div class="flex flex-col">
+		<nz-form-label [nzSpan]="24" nzFor="nombre_rol" class="text-gray-700 font-semibold">
+			<span nz-icon nzType="user" nzTheme="outline" class="mr-2"></span>Nombre del Rol
+		</nz-form-label>
+		<input
+			id="nombre_rol"
+			formControlName="nombre_rol"
+			type="text"
+			placeholder="Ingrese nombre del rol"
+			[ngClass]="{
+				'border-red-500': nombreRolField.invalid && (nombreRolField.dirty || nombreRolField.touched),
+				'border-green-500': nombreRolField.valid && (nombreRolField.dirty || nombreRolField.touched),
+				'border-gray-300': !(nombreRolField.dirty || nombreRolField.touched),
+			}"
+			class="border rounded-lg p-2 transition duration-300 ease-in-out focus:outline-none focus:ring-0"
+		/>
+		<div *ngIf="nombreRolField.invalid && (nombreRolField.dirty || nombreRolField.touched)" class="text-red-500 mt-1">
+			<small *ngIf="nombreRolField.errors?.['required']">El nombre del rol es requerido.</small>
+			<small *ngIf="nombreRolField.errors?.['minlength']">El nombre debe tener al menos 3 caracteres.</small>
+		</div>
+	</div>
+
+	<!-- Descripción del Rol -->
+	<div class="flex flex-col">
+		<nz-form-label [nzSpan]="24" nzFor="descripcion" class="text-gray-700 font-semibold">
+			<span nz-icon nzType="file-text" nzTheme="outline" class="mr-2"></span>Descripción
+		</nz-form-label>
+		<textarea
+			id="descripcion"
+			formControlName="descripcion"
+			placeholder="Ingrese descripción"
+			[ngClass]="{
+				'border-red-500': descripcionRolField.invalid && (descripcionRolField.dirty || descripcionRolField.touched),
+				'border-green-500': descripcionRolField.valid && (descripcionRolField.dirty || descripcionRolField.touched),
+				'border-gray-300': !(descripcionRolField.dirty || descripcionRolField.touched),
+			}"
+			class="border rounded-lg p-2 transition duration-300 ease-in-out focus:outline-none focus:ring-0"
+			rows="3"
+		></textarea>
+		<div
+			*ngIf="descripcionRolField.invalid && (descripcionRolField.dirty || descripcionRolField.touched)"
+			class="text-red-500 mt-1"
+		>
+			<small *ngIf="descripcionRolField.errors?.['required']">La descripción es requerida.</small>
+			<small *ngIf="descripcionRolField.errors?.['minlength']">La descripción debe tener al menos 10 caracteres.</small>
+		</div>
+	</div>
+
+	<!-- Estado del Rol -->
+	<div class="flex flex-col">
+		<label class="text-gray-700 font-semibold mb-2 flex items-center">
+			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+				<path
+					fill-rule="evenodd"
+					d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+					clip-rule="evenodd"
+				/>
+			</svg>
+			Estado
+		</label>
+		<nz-radio-group formControlName="estado" class="flex space-x-4">
+			<label nz-radio [nzValue]="true" class="flex items-center">
+				<span class="ml-2">Activo</span>
+			</label>
+			<label nz-radio [nzValue]="false" class="flex items-center">
+				<span class="ml-2">Inactivo</span>
+			</label>
+		</nz-radio-group>
+	</div>
+
+	<!-- Botones de Acción -->
+	<div class="flex justify-end mt-6 space-x-4">
+		<button
+			nz-button
+			nzType="primary"
+			type="submit"
+			[disabled]="formGroup.invalid"
+			class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center space-x-2 transition duration-300 ease-in-out focus:outline-none focus:ring-0"
+		>
+			<span nz-icon nzType="save" nzTheme="outline"></span>
+			<span>Actualizar</span>
+		</button>
+		<button
+			nz-button
+			nzType="default"
+			(click)="cancelar($event)"
+			class="border border-gray-300 text-gray-700 hover:bg-gray-100 font-semibold py-2 px-4 rounded-lg flex items-center space-x-2 transition duration-300 ease-in-out focus:outline-none focus:ring-0"
+		>
+			<span nz-icon nzType="close" nzTheme="outline"></span>
+			<span>Cancelar</span>
+		</button>
+	</div>
+</form>

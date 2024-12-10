@@ -1,0 +1,180 @@
+<div>
+	<nz-breadcrumb class="font-bold text-sm" [nzAutoGenerate]="true"> </nz-breadcrumb>
+</div>
+<div class="py-6">
+	<div class="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
+		<!-- Título de la sección con icono -->
+		<h3 class="text-xl font-semibold text-gray-800 flex items-center">
+			<svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" viewBox="0 0 24 24" class="mr-2">
+				<path
+					fill="#000000"
+					d="M22 3H2v6h1v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9h1zM4 5h16v2H4zm15 15H5V9h14zM9 11h6a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2"
+				/>
+			</svg>
+			Gestión de Productos
+		</h3>
+
+		<div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+			<nz-input-group [nzSuffix]="suffixIconSearch" class="w-full md:w-64">
+				<input type="text" nz-input placeholder="Buscar producto" [(ngModel)]="search" (keyup.enter)="searchTo()" />
+			</nz-input-group>
+			<ng-template #suffixIconSearch>
+				<span nz-icon nzType="search"></span>
+			</ng-template>
+
+			<div class="flex">
+				<button
+					(click)="refreshPage()"
+					nz-tooltip
+					nzTooltipTitle="Refrescar"
+					class="flex items-center justify-center h-9 px-3 bg-[#22c55e] hover:bg-[#1ea352] transition-colors"
+				>
+					<span nz-icon nzType="sync" nzTheme="outline" class="text-white text-lg font-bold"></span>
+				</button>
+
+				<button
+					nz-tooltip
+					nzTooltipTitle="Subir Archivo"
+					(click)="openUploadProducto()"
+					class="flex items-center justify-center h-9 px-3 bg-gray-600 hover:bg-gray-700 transition-colors"
+				>
+					<span nz-icon nzType="upload" nzTheme="outline" class="text-white text-lg font-bold"></span>
+				</button>
+
+				<button
+					(click)="downloadPDF()"
+					nz-tooltip
+					nzTooltipTitle="Descargar PDF"
+					class="flex items-center justify-center h-9 px-3 bg-red-500 hover:bg-red-600 transition-colors"
+				>
+					<span nz-icon nzType="file-pdf" nzTheme="fill" class="text-white text-lg font-bold"></span>
+				</button>
+
+				<button
+					(click)="descargarExcel()"
+					nz-tooltip
+					nzTooltipTitle="Descargar Excel"
+					class="flex items-center justify-center h-9 px-3 bg-[#1D6F42] hover:bg-[#185c37] transition-colors"
+				>
+					<span nz-icon nzType="file-excel" nzTheme="fill" class="text-white text-lg font-bold"></span>
+				</button>
+
+				<button
+					routerLink="../crear-producto"
+					class="flex items-center justify-center h-9 px-4 bg-[#6366f1] hover:bg-[#5558e4] transition-colors"
+				>
+					<span nz-icon nzType="plus-circle" nzTheme="fill" class="text-white text-lg font-bold mr-2"></span>
+					<span class="text-white font-medium">Crear</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="w-full overflow-hidden">
+		<nz-table
+			#basicTable
+			[nzData]="productos"
+			[nzLoading]="loading"
+			[nzPageSize]="limit"
+			[nzTotal]="total"
+			[nzFrontPagination]="false"
+			(nzPageIndexChange)="onPageChange($event)"
+			[nzScroll]="{ x: '1500px' }"
+			nzShowSizeChanger
+			[nzBordered]="true"
+			[nzShowQuickJumper]="true"
+			class="w-full overflow-x-auto"
+		>
+			<thead class="sticky top-0 z-10">
+				<tr class="bg-gray-100">
+					<th nzWidth="200px" nzLeft="0px" nzColumnKey="codigo_producto" class="font-semibold text-gray-700">Código</th>
+					<th nzWidth="150px" nzColumnKey="nombre_producto" class="font-semibold text-gray-700">Nombre</th>
+					<th nzWidth="80px" nzColumnKey="stock" class="font-semibold text-gray-700">Stock</th>
+					<th nzWidth="150px" nzColumnKey="id_categoria" class="font-semibold text-gray-700">Categoría</th>
+					<th nzWidth="120px" nzColumnKey="id_marca" class="font-semibold text-gray-700">Marca</th>
+					<th nzWidth="140px" nzColumnKey="precio_compra" class="font-semibold text-gray-700">Precio Compra</th>
+					<th nzWidth="150px" nzColumnKey="precio_venta" class="font-semibold text-gray-700">Precio Venta</th>
+					<th nzWidth="150px" nzColumnKey="precio_venta" class="font-semibold text-gray-700">Precio sin IGV</th>
+					<th nzWidth="150px" nzColumnKey="fecha_ingreso" class="font-semibold text-gray-700">Fecha Ingreso</th>
+					<th nzWidth="150px" nzColumnKey="sucursal" class="font-semibold text-gray-700">Sucursal</th>
+					<th nzWidth="150px" nzColumnKey="estado_produto" class="font-semibold text-gray-700">Disponibilidad</th>
+					<th nzWidth="150px" nzColumnKey="tipoPropietario" class="font-semibold text-gray-700">Propietario</th>
+					<th nzWidth="120px" nzRight="0px" class="font-semibold text-gray-700 bg-gray-100">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (producto of productos; track producto.id_producto) {
+					<tr>
+						<td>
+							<ngx-barcode6
+								[bc-format]="'CODE128'"
+								[bc-value]="producto.codigo_producto"
+								[bc-display-value]="true"
+								[bc-width]="1.0"
+								[bc-height]="30"
+								[bc-margin]="5"
+								[bc-font-size]="12"
+							></ngx-barcode6>
+						</td>
+						<td>{{ producto.nombre_producto | slice: 0 : 15 }}</td>
+						<td>{{ producto.stock }}</td>
+						<td>{{ producto.tb_categorias.nombre_cat }}</td>
+						<td>{{ producto.tb_marcas.nombre_marca }}</td>
+						<td>{{ producto.precio_compra }}</td>
+						<td>{{ producto.precio_venta }}</td>
+						<td>{{ producto.precio_base_sin_igv | peruvianCurrency }}</td>
+
+						<td>{{ producto.fecha_ingreso | date: 'short' }}</td>
+						<td>{{ producto.tb_sucursales.nombre_sucursal }}</td>
+						<td>
+							<nz-tag [nzColor]="producto.estado_produto === 'Disponible' ? 'green' : 'red'">
+								{{ producto.estado_produto }}
+							</nz-tag>
+						</td>
+						<td>{{ producto.tb_tipo_propietario.descripcion }}</td>
+
+						<td nzRight="0px" nzAlign="left" class="bg-white">
+							<nz-space [nzSize]="8">
+								<ng-container *nzSpaceItem>
+									<button
+										[routerLink]="['/admin/productos/', producto.id_producto]"
+										class="view-btn flex items-center justify-center w-8 h-7"
+										nz-tooltip
+										nzTooltipTitle="Ver Producto"
+									>
+										<span nz-icon nzType="eye" nzTheme="fill" class="text-white"></span>
+									</button>
+								</ng-container>
+
+								<ng-container *nzSpaceItem>
+									<button
+										[routerLink]="['/admin/productos/actualizar', producto.id_producto]"
+										class="edit-btn flex items-center justify-center w-8 h-7"
+										nz-tooltip
+										nzTooltipTitle="Editar"
+									>
+										<span nz-icon nzType="edit" nzTheme="fill" class="text-white"></span>
+									</button>
+								</ng-container>
+								<ng-container *nzSpaceItem>
+									<button
+										(click)="deleteProducto(producto)"
+										class="delete-btn flex items-center justify-center w-8 h-7"
+										nz-tooltip
+										nzTooltipTitle="Eliminar"
+									>
+										<span nz-icon nzType="delete" nzTheme="fill" class="text-white"></span>
+									</button>
+								</ng-container>
+							</nz-space>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</nz-table>
+	</div>
+
+	<div class="mt-4 text-right text-sm text-gray-600">
+		<strong>Total de Productos: {{ total }}</strong>
+	</div>
+</div>

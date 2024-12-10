@@ -1,0 +1,323 @@
+<div>
+	<nz-breadcrumb class="font-bold text-sm" [nzAutoGenerate]="true"> </nz-breadcrumb>
+</div>
+
+<div class="my-4">
+	<form [formGroup]="ventaForm">
+		<!-- Tipo de Pago -->
+		<div class="mb-6 bg-gray-100 p-6 rounded-md">
+			<div class="flex items-center gap-2 mb-4">
+				<i nz-icon nzType="credit-card" nzTheme="outline" class="text-blue-500"></i>
+				<h3 class="text-base font-medium text-gray-800">Tipo de Pago</h3>
+				<span class="text-red-500">*</span>
+			</div>
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+				<div>
+					<label class="block text-sm text-gray-600 mb-2">Pago</label>
+					<select
+						formControlName="metodoPago"
+						class="w-full outline-none p-2.5 border border-gray-200 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+						(change)="onMetodoPagoChange($event)"
+					>
+						<option value="">Seleccionar</option>
+						<option class="outline-none" *ngFor="let metodo of metodosPago" [value]="metodo.id_metodo_pago">
+							{{ metodo.nombre_metodo_pago }}
+						</option>
+					</select>
+				</div>
+				<!-- Sucursales -->
+				<div>
+					<label class="block text-sm text-gray-600 mb-2">Sucursales</label>
+					<select
+						formControlName="sucursal"
+						class="w-full outline-none p-2.5 border border-gray-200 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+					>
+						<option value="">Seleccionar</option>
+						<option class="outline-none" *ngFor="let sucursal of sucursales" [value]="sucursal.id_sucursal">
+							{{ sucursal.nombre_sucursal }}
+						</option>
+					</select>
+				</div>
+				<!-- Tipo de Documento -->
+				<div>
+					<label class="block text-sm text-gray-600 mb-2">Tipo de Documento</label>
+					<select
+						formControlName="tipo_documento"
+						class="w-full outline-none p-2.5 border border-gray-200 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+					>
+						<option class="outline-none" value="">Seleccionar</option>
+						<option class="outline-none" value="FACTURA">FACTURA</option>
+						<option class="outline-none" value="BOLETA">BOLETA</option>
+						<option class="outline-none" value="NOTA_CREDITO">NOTA DE CRÉDITO</option>
+						<option class="outline-none" value="NOTA_DEBITO">NOTA DE DÉBITO</option>
+					</select>
+				</div>
+				<!-- Fecha -->
+				<nz-form-item>
+					<nz-form-label [nzSpan]="24" nzFor="created_at" class="text-lg font-semibold">
+						<span nz-icon nzType="calendar" nzTheme="outline" class="mr-2"></span>Fecha de Creación
+					</nz-form-label>
+					<nz-form-control [nzSpan]="24" [nzErrorTip]="'La fecha de creación es requerida'">
+						<nz-date-picker
+							formControlName="fecha_venta"
+							id="created_at"
+							class="w-full"
+							[nzFormat]="'dd/MM/yyyy'"
+						></nz-date-picker>
+					</nz-form-control>
+				</nz-form-item>
+			</div>
+		</div>
+
+		<!-- Datos del cliente -->
+		<div class="bg-gray-100 p-6 rounded-md mb-6">
+			<div class="flex items-center gap-2 mb-4">
+				<i nz-icon nzType="user" nzTheme="outline" class="text-blue-500"></i>
+				<h3 class="text-base font-medium text-gray-800">Datos del Cliente</h3>
+				<span class="text-red-500">*</span>
+			</div>
+
+			<!-- Grid Layout -->
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+				<!-- Cliente -->
+				<div>
+					<label class="block text-sm text-gray-600 mb-2">Cliente</label>
+					<select
+						formControlName="cliente"
+						class="w-full outline-none p-2.5 border border-gray-200 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+						(change)="onClienteChange($event)"
+					>
+						<option value="">Seleccionar</option>
+						<option *ngFor="let cli of clientes" [value]="cli.id_cliente">
+							{{ cli.tb_personas.nombres }}
+						</option>
+					</select>
+				</div>
+
+				<!-- RUC -->
+				<div>
+					<label class="block text-sm text-gray-600 mb-2">RUC</label>
+					<input
+						type="text"
+						class="w-full p-2.5 border border-gray-200 rounded bg-gray-50"
+						[value]="clienteSeleccionado.ruc || ''"
+						disabled
+						placeholder="RUC"
+					/>
+				</div>
+
+				<!-- Dirección -->
+				<div>
+					<label class="block text-sm text-gray-600 mb-2">Dirección</label>
+					<input
+						type="text"
+						class="w-full p-2.5 border border-gray-200 rounded bg-gray-50"
+						[value]="clienteSeleccionado.direccion || ''"
+						disabled
+						placeholder="Dirección"
+					/>
+				</div>
+			</div>
+
+			<!-- Segunda fila -->
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<!-- Correo -->
+				<div>
+					<label class="block text-sm text-gray-600 mb-2">Correo</label>
+					<input
+						type="email"
+						class="w-full p-2.5 border border-gray-200 rounded bg-gray-50"
+						[value]="clienteSeleccionado.correo || ''"
+						disabled
+						placeholder="Correo Electrónico"
+					/>
+				</div>
+
+				<!-- Teléfono -->
+				<div>
+					<label class="block text-sm text-gray-600 mb-2">Teléfono</label>
+					<input
+						type="tel"
+						class="w-full p-2.5 border border-gray-200 rounded bg-gray-50"
+						[value]="clienteSeleccionado.telefono || ''"
+						disabled
+						placeholder="Teléfono"
+					/>
+				</div>
+			</div>
+		</div>
+
+		<!-- Agregar Producto -->
+		<div class="bg-gray-100 p-6 rounded-md mb-6">
+			<div class="flex items-center gap-2 mb-4">
+				<i nz-icon nzType="shopping-cart" nzTheme="outline" class="text-blue-500"></i>
+				<h3 class="text-base font-medium text-gray-800">Agregar Producto</h3>
+				<span class="text-red-500">*</span>
+			</div>
+
+			<!-- Fila de Categoría, Producto, Precio, Stock y Cantidad -->
+			<div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+				<!-- Producto -->
+				<div>
+					<label class="block text-sm text-gray-600 mb-2">Producto </label>
+					<select
+						formControlName="producto"
+						class="w-full outline-none p-2.5 border border-gray-200 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+						(change)="onProductoChange($event)"
+					>
+						<option value="">Seleccionar</option>
+						<option *ngFor="let producto of productos" [value]="producto.id_producto">
+							{{ producto.nombre_producto }}
+						</option>
+					</select>
+				</div>
+
+				<!-- Precio -->
+				<div>
+					<label class="block text-sm text-gray-600 mb-2">Precio</label>
+					<input
+						type="text"
+						class="w-full p-2.5 border border-gray-200 rounded bg-gray-50"
+						[value]="productoSelecionado.precio_venta || ''"
+						disabled
+						placeholder="Precio"
+					/>
+				</div>
+
+				<!-- Stock -->
+				<div>
+					<label class="block text-sm text-gray-600 mb-2">Stock</label>
+					<input
+						type="text"
+						class="w-full p-2.5 border border-gray-200 rounded bg-gray-50"
+						[value]="productoSelecionado.stock || ''"
+						disabled
+						placeholder="Stock"
+					/>
+				</div>
+
+				<!-- Cantidad -->
+				<div>
+					<label class="block text-sm text-gray-600 mb-2">Cantidad</label>
+					<input
+						type="number"
+						class="w-full p-2.5 border border-gray-200 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+						[(ngModel)]="cantidad"
+						[ngModelOptions]="{ standalone: true }"
+						placeholder="Cantidad"
+						[max]="productoSelecionado.stock"
+					/>
+				</div>
+
+				<!-- Descuento -->
+				<div>
+					<label class="block text-sm text-gray-600 mb-2">Descuento</label>
+					<input
+						type="number"
+						class="w-full p-2.5 border border-gray-200 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+						[(ngModel)]="descuento"
+						[ngModelOptions]="{ standalone: true }"
+						placeholder="Descuento"
+						min="0"
+					/>
+				</div>
+			</div>
+
+			<!-- Botón Agregar -->
+			<div class="flex justify-end">
+				<button
+					class="bg-blue-500 flex items-center text-white px-4 py-2 rounded hover:bg-blue-600 focus:ring-1 focus:ring-blue-500"
+					(click)="agregarProducto()"
+				>
+					<i nz-icon nzType="plus-circle" nzTheme="outline" class="mr-2"></i>
+					<!-- Ícono de agregar -->
+					Agregar
+				</button>
+			</div>
+		</div>
+
+		<!-- Detalles Compra -->
+		<div class="bg-gray-100 p-6 rounded-md shadow-md">
+			<!-- Título -->
+			<h3 class="text-lg font-semibold text-gray-800 mb-4">Detalle de Ventas</h3>
+
+			<!-- Tabla -->
+			<div class="overflow-x-auto mb-6">
+				<table class="table-auto w-full border border-gray-200 rounded">
+					<thead class="bg-gray-100 text-gray-700">
+						<tr class="bg-[#4644CD] text-white">
+							<th class="px-4 py-2 text-left">Producto</th>
+							<th class="px-4 py-2 text-center">Marca</th>
+							<th class="px-4 py-2 text-center">P. Compra</th>
+							<th class="px-4 py-2 text-center">Cant</th>
+							<th class="px-4 py-2 text-center">Total</th>
+							<th class="px-4 py-2 text-center">Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="border-t" *ngFor="let detalle of detalleProductos; let i = index">
+							<td class="px-4 py-2">{{ detalle.producto }}</td>
+							<td class="px-4 py-2 text-center">{{ detalle.marca }}</td>
+							<td class="px-4 py-2 text-center">{{ detalle.precio_unitario | number: '1.2-2' }}</td>
+							<td class="px-4 py-2 text-center">{{ detalle.cantidad }}</td>
+							<td class="px-4 py-2 text-center">{{ detalle.subtotal | number: '1.2-2' }}</td>
+							<td class="px-4 py-2 text-center">
+								<button class="text-red-500 hover:text-red-700" (click)="eliminarProducto(i)">
+									<i nz-icon nzType="delete" nzTheme="outline"></i>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- Subtotal, Descuento, IGV y Total -->
+			<div class="mt-4 ml-auto w-72">
+				<div class="flex justify-between py-2">
+					<span class="text-gray-600">Sub Total</span>
+					<span class="font-medium">{{ subtotal | number: '1.2-2' }}</span>
+				</div>
+				<div class="flex justify-between py-2">
+					<span class="text-gray-600">Descuento</span>
+					<span class="font-medium text-red-600">-{{ calcularDescuentoTotal() | number: '1.2-2' }}</span>
+				</div>
+				<div class="flex justify-between py-2">
+					<span class="text-gray-600">IGV (18%)</span>
+					<span class="font-medium">{{ igv | number: '1.2-2' }}</span>
+				</div>
+				<div class="flex justify-between py-2 border-t border-gray-200">
+					<span class="font-medium">Total</span>
+					<span class="font-medium">{{ total | number: '1.2-2' }}</span>
+				</div>
+			</div>
+
+			<!-- Comentario -->
+			<div class="mb-6">
+				<label for="comentario" class="block text-sm text-gray-600 mb-2">Comentario</label>
+				<textarea
+					formControlName="observaciones"
+					id="observaciones"
+					rows="3"
+					class="w-full outline-none p-3 border border-gray-200 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-blue-50"
+					placeholder="Observaciones"
+				></textarea>
+			</div>
+
+			<!-- Botones -->
+			<div class="flex gap-4 justify-start">
+				<button
+					(click)="saveVenta()"
+					class="flex items-center bg-emerald-500 text-white px-4 py-2 rounded hover:bg-emerald-600"
+				>
+					<i nz-icon nzType="save" nzTheme="outline" class="mr-2"></i> Guardar
+				</button>
+				<button
+					(click)="limpiarFormulario()"
+					class="flex items-center bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+				>
+					<i nz-icon nzType="delete" nzTheme="outline" class="mr-2"></i> Limpiar
+				</button>
+			</div>
+		</div>
+	</form>
+</div>

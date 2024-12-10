@@ -1,0 +1,197 @@
+<nz-breadcrumb class="text-sm text-gray-600 mb-4" [nzAutoGenerate]="true"> </nz-breadcrumb>
+<div class="flex justify-end">
+	<button
+		(click)="downloadPDF()"
+		class="flex px-2 py-1.5 items-center bg-[#6366F1] gap-2 text-white font-bold"
+		[disabled]="isDownloading"
+	>
+		<span nz-icon [nzType]="isDownloading ? 'loading' : 'download'"></span>
+		{{ isDownloading ? 'Descargando...' : 'Descargar' }}
+	</button>
+
+	<button
+		(click)="back()"
+		class="flex px-2 py-1.5 items-center gap-2 bg-gray-200 text-gray-700 font-bold hover:bg-gray-300"
+	>
+		<span nz-icon nzType="arrow-left"></span>
+		atrás
+	</button>
+</div>
+@if (personal) {
+	<div class="container mx-auto px-4 py-6">
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+			<!-- Personal Profile Card -->
+			<div class="md:col-span-1">
+				<div class="bg-white shadow-lg rounded-lg overflow-hidden">
+					<div class="bg-gray-100 px-6 py-4 border-b border-gray-200">
+						<div class="flex items-center space-x-4">
+							<div class="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center">
+								<img
+									*ngIf="personal.personal_img"
+									[src]="personal.personal_img"
+									alt="Personal profile"
+									class="w-full h-full object-cover"
+								/>
+								<img
+									*ngIf="!personal.personal_img"
+									width="100"
+									height="100"
+									src="https://img.icons8.com/plasticine/100/user.png"
+									alt="default user"
+								/>
+							</div>
+							<div>
+								<h3 class="font-bold text-xl text-gray-800">
+									{{ personal.tb_personas.nombres }}
+								</h3>
+								<p class="text-sm text-gray-500">{{ personal.tb_rol.nombre_rol }}</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="p-6">
+						<div class="space-y-4">
+							<div class="flex justify-between items-center">
+								<span class="text-gray-500">Identificación</span>
+								<span class="font-medium text-gray-800">
+									{{ personal.tb_personas.numero_documento }}
+									({{ personal.tb_personas.tb_tipo_documento.documento }})
+								</span>
+							</div>
+							<div class="flex justify-between items-center">
+								<span class="text-gray-500">Nombre completo</span>
+								<h3 class="font-medium text-gray-800">
+									{{ personal.tb_personas.nombres }}
+								</h3>
+							</div>
+							<div class="flex justify-between items-center">
+								<span class="text-gray-500">Correo electrónico</span>
+								<span class="font-medium text-gray-800">{{ personal.email }}</span>
+							</div>
+							<div class="flex justify-between items-center">
+								<span class="text-gray-500">Sexo</span>
+								<span class="font-medium text-gray-800">{{ personal.tb_personas.tb_sexo.sexo }}</span>
+							</div>
+							<div class="flex justify-between items-center">
+								<span class="text-gray-500">Fecha de nacimiento</span>
+								<span class="font-medium text-gray-800">
+									{{ personal.tb_personas.fecha_nacimiento | date: 'dd/MM/yyyy' }}
+								</span>
+							</div>
+							<div class="flex justify-between items-center">
+								<span class="text-gray-500">Dirección</span>
+								<span class="font-medium text-gray-800">
+									{{ personal.tb_personas.tb_direccion.direccion }}
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<button
+						class="w-full p-4 font-medium {{
+							personal.estado ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+						}}"
+					>
+						{{ personal.estado ? 'Activo' : 'Inactivo' }}
+					</button>
+				</div>
+			</div>
+
+			<!--  Ventas Section -->
+			<div class="md:col-span-2">
+				<div class="bg-white shadow-lg rounded-xl border border-gray-100">
+					<!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+						<div class="bg-blue-500 text-white rounded-lg p-6 shadow-md">
+							<div class="text-lg font-semibold">Ventas totales</div>
+							<div class="flex justify-between text-sm mt-2">
+								<p>Número de ventas</p>
+								<p>{{ personal.tb_ventas.length }}</p>
+							</div>
+
+							<div class="border-t border-blue-300 my-4"></div>
+							<div class="text-2xl font-bold text-right">
+								Total: {{ calcularTotalVentas(personal.tb_ventas) | peruvianCurrency }}
+							</div>
+						</div>
+
+						<div class="bg-red-500 text-white rounded-lg p-6 shadow-md">
+							<div class="text-lg font-semibold">Ultima venta</div>
+
+							<div class="flex justify-between text-sm">
+								<p>Realizada</p>
+								<p>{{ personal.tb_ventas[0].fecha_venta | dateFormat }}</p>
+							</div>
+							<div class="border-t border-red-300 my-4"></div>
+							<div class="text-2xl font-bold text-right">
+								Fecha: {{ personal.tb_ventas[0].fecha_venta | date: 'dd-MM-yyyy' }}
+							</div>
+						</div>
+					</div> -->
+
+					<!-- Tabla de Ventas -->
+					<div class="w-full p-6">
+						<table class="min-w-full border-collapse shadow-md">
+							<thead class="bg-gray-100">
+								<tr>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+										N° de venta
+									</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+										Cliente
+									</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+										Subtotal
+									</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+										Total neto
+									</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+								</tr>
+							</thead>
+							<tbody>
+								@for (venta of personal.tb_ventas; track venta.id_venta; let i = $index) {
+									<tr>
+										<td class="px-6 py-3 text-sm text-gray-900">{{ i + 1 }}</td>
+										<td class="px-6 py-3 text-sm text-gray-900">{{ venta.numero_documento }}</td>
+										<td class="px-6 py-3 text-sm text-gray-500">
+											{{ venta.tb_cliente.tb_personas.nombres }}
+											{{ venta.tb_cliente.tb_personas.apellido_paterno }}
+										</td>
+										<td class="px-6 py-3 text-sm text-gray-500">
+											{{ venta.created_at | date: 'dd/MM/yyyy' }}
+										</td>
+										<td class="px-6 py-3 text-sm text-gray-500">
+											{{ venta.subtotal | peruvianCurrency }}
+										</td>
+										<td class="px-6 py-3 text-sm text-gray-500">
+											{{ venta.precio_total | peruvianCurrency }}
+										</td>
+										<td class="px-6 py-3 text-sm text-gray-500">
+											<span
+												[ngClass]="{
+													'text-green-600': venta.estado_venta === 'Completado',
+													'text-yellow-600': venta.estado_venta === 'Pendiente',
+													'text-red-600': venta.estado_venta === 'Cancelado',
+												}"
+											>
+												{{ venta.estado_venta }}
+											</span>
+										</td>
+									</tr>
+								} @empty {
+									<tr>
+										<td colspan="7" class="px-6 py-3 text-center text-sm text-gray-500">No hay ventas realizadas...</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+} @else {
+	<p>Cargando datos del personal...</p>
+}
